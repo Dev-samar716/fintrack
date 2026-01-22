@@ -1,0 +1,92 @@
+.Income-header-Container {
+    display: flex;
+  justify-content: flex-start; /* no forced vertical centering */
+  width: 100%;
+  font-family: 'Roboto', sans-serif;
+  color: #fff;
+ background-color: #000000;
+ padding: 1rem;
+}
+.Income-Input-Section-Container {
+    padding: 1rem; 
+    display: flex;
+    flex-direction: column; 
+    gap: 1rem;
+    color: #ccc; 
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.3rem;
+     background-color: #262626;
+}
+.Income-input-title{
+    text-align: center;
+}
+.Income-input-form {
+    display: flex;
+    flex-direction: column; 
+    gap: 1rem;
+     font-family: 'Poppins', sans-serif;
+}
+.Income-input-group {
+    display: flex; 
+    gap: 0.5rem;
+}
+.Income-input-label {
+      padding: 0.8rem;
+}
+.Income-input-select {
+    background-color: #3c3c3c; 
+    color: #ccc;
+    height: 100%;
+     font-family: 'Poppins', sans-serif;
+     cursor: pointer;
+      border: 1px solid transparent; 
+       outline: none; 
+    padding: 14px 16px; 
+    border-radius: 8px;
+}
+.Income-input-select:focus {
+    border-color: #4D90FE; 
+} 
+.Income-input-field {
+    border: 1px solid transparent; 
+    outline: none; 
+    padding: 14px 16px; 
+    border-radius: 8px; 
+    font-family: 'Poppins', sans-serif; 
+    font-size: 14px; 
+    background-color: #3c3c3c; 
+    color: #EDEDED;
+}
+.Income-input-field:focus {
+    border-color: #4D90FE; 
+} 
+.Income-submit-button {
+  background-color: #4D90FE;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  padding: 12px 16px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.Income-submit-button:hover {
+  background-color: #3c7be0;
+}
+
+.Income-submit-button:focus {
+  outline: none;
+} 
+.Income-Breakdown-Section-Container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem; 
+    color: #EDEDED; 
+    font-family: 'Poppins', sans-serif; 
+    font-size: 1.5rem;
+}
+.Sources-total-Expense {
+    list-style-type: none;
+}

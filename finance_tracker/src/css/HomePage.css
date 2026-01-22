@@ -1,0 +1,59 @@
+.Whole {
+    width: 100%;
+    height: 110vh;
+    display: flex;
+    justify-content: center;
+     align-items: center;
+     flex-direction: column;
+}
+.Home-Page-Parent-Div {
+     background-color: #121212;
+     color: #fff;
+     font-family: 'Poppins', sans-serif;
+     padding: 1rem;
+     width: 90%; 
+     display: flex;
+     flex-direction: column;
+}
+.Home-Page-Expense-Overview-Cards-Container {
+      display: flex; 
+       gap: 15rem;
+        width: 100%;
+}
+.Expense-Category-Total-Review-Card {
+    background-color: #2a2a2a;
+    padding: 1rem;
+    border-radius: 10px;
+}
+.Total-p {
+      font-size: 1.5rem; 
+      color: gold
+}
+.Category-total-Expense {
+    list-style-type: none;
+    font-size: 1.3rem;
+} 
+.Expense-Comparision-Charts-Container {
+    width: 100%;
+    display: flex;           
+    justify-content: center; 
+    align-items: center;     
+    padding: 1rem;           
+    min-height: 300px;
+}
+.Currency-Select-Container {
+    color: #ededed; 
+    font-size: 1rem;
+    font-family: 'Poppins', sans-serif;
+    padding: 1rem;
+     display: flex;
+} 
+.Currency-Select-Container label {
+    font-size: 1.5rem;
+    font-weight: 600;
+    padding: 0.7rem;
+}
+.Currency-Input-Select {
+    padding: 0.7rem; 
+    cursor: pointer;
+}

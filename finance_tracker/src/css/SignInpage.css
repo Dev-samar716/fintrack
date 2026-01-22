@@ -1,0 +1,129 @@
+/*Styling for SignUp/LogIn Page starts from here*/ 
+ 
+.SignUp-form-Parent {
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    height: 90vh; 
+}
+.SignUp-form-div {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* puts content at the top */
+    align-items: flex-start;
+    background-color: #262626;
+    border-radius: 10px;
+    width: 20%;
+    height: 80%;
+    padding: 1.5rem;
+    color: #fff;
+    gap: 1rem; /* adds clean spacing between elements */ 
+    box-shadow: rgba(0, 0, 0, 0); 
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  transform: translateY(-20px); /* pulls it upward */
+  transition: transform 0.25s ease, box-shadow 0.25s ease; /*Smooth transition, enhances UX*/
+}
+.SignUp-form-div:hover {
+    transform: translateY(-26px); /*lifts it even more upward in hover */ 
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+}
+.SignUP-form-header {
+    font-family: 'Poppins', sans-serif; 
+    width: 100%;
+    text-align: center; 
+    font-size: 1.5rem;
+} 
+
+.SignUp-form-div label { 
+    font-family: 'Poppins', sans-serif;
+  font-size: 1rem;  /* 16px clean, readable, professional */
+  font-weight: 500; /* medium weight looks neat on dark */
+    opacity: 0.7; /*Low opacity to avoid making it distracting*/
+    margin-bottom: 0.3rem;  
+}
+
+.UserName-Info {
+    display: flex; 
+    gap: 3px; 
+    height: 5%; 
+    width: 100%;
+    flex-wrap: wrap; 
+     justify-content: center; 
+     align-items: flex-start; 
+      margin-bottom: 3rem; /* spacing ONLY between input sections */
+} 
+.Icon-container { /*Note: This is div contains both label and verified icon!*/
+    display: flex;
+}
+.check-visible {
+    display: block;
+    color: green;
+} 
+.check-invisible {
+    display: none;
+}
+.Input-form {
+    border: 1px solid transparent; 
+    outline: none; 
+    padding: 14px 16px; 
+    border-radius: 8px; 
+    font-family: 'Poppins', sans-serif; 
+    font-size: 14px; 
+    background-color: #3c3c3c; 
+    color: #EDEDED;
+    height: 5%;
+    width: 100%;
+} 
+.Input-form:focus {
+    border-color: #4D90FE; 
+} 
+.Input-form::placeholder {
+    font-family: 'Poppins', sans-serif;
+} 
+.Password-Info {
+    display: flex; 
+    gap: 3px; 
+    height: 5%; 
+    width: 100%;
+    flex-wrap: wrap; 
+     justify-content: center; 
+     align-items: flex-start;
+      margin-bottom: 3rem; /* spacing ONLY between input sections */
+}
+.Email-Info {
+    display: flex; 
+    gap: 3px; 
+    height: 5%; 
+    width: 100%;
+    flex-wrap: wrap; 
+     justify-content: center; 
+     align-items: flex-start;
+      margin-bottom: 3rem; /* Spacing Only between input sections */
+} 
+.SignUp-BTN {
+   background-color: #2563EB;
+  color: #FFFFFF;
+  padding: 12px 20px;
+  border-radius: 5px;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  transition: 0.2s ease;
+  width: 100%;
+  text-align: center; 
+  border: none;
+} 
+.SignUp-BTN:hover {
+    background-color: #2564ebc4;
+}
+.SignUp-BTN:disabled {
+    background-color: #2564ebc4; 
+    opacity: 0.6;
+}
+.SignUp-Btn-Container {
+    width: 100%;
+} 
+.Invalid-feedback {
+    color: #EF4444;
+    font-family: 'Poppins', sans-serif; 
+    font-weight: bold;
+}

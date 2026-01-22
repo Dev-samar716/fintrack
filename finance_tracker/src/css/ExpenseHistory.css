@@ -1,0 +1,38 @@
+.Month-Select-Container {
+    color: #ededed; 
+    font-size: 1rem;
+    font-family: 'Poppins', sans-serif;
+    padding: 1rem;
+     display: flex;
+} 
+.Month-Select-Container label {
+    font-size: 1.5rem;
+    font-weight: 600;
+    padding: 0.7rem;
+}
+.Month-Input-Select {
+    padding: 0.7rem; 
+    cursor: pointer;
+}
+.Layout-flex-Container {
+    display: flex;
+    gap: 1rem
+}
+.Expense-Card-Container h1 {
+    color: #ededed;
+    font-family: 'Poppins',sans-serif;
+    text-align: center;
+}
+.Selected-Month-Total-Amount-Container {
+    padding: 1rem
+} 
+.Selected-Month-Total-Amount-Container h2{
+    color: #ededed;
+    font-family: 'Poppins',sans-serif;
+    text-align: center;
+}
+.Selected-Month-Total-Amount-Span {
+    color: gold;
+    font-family: 'Poppins',sans-serif;
+    text-align: center;
+}

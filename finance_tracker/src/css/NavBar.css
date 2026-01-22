@@ -1,0 +1,103 @@
+/*Styling of Navigation Bar begins from here*/ 
+* {
+    padding: 0; 
+    margin: 0;
+}
+.logo{
+ font-size: 22px;
+  font-weight: bold;
+  color: #111827; 
+  font-family: 'Poppins', sans-serif;
+} 
+.navbar {
+    background-color: #fff; 
+    display: flex;
+} 
+.User-Profile-Icon-Container {
+     background-color: #111827;
+       border-radius: 22px; 
+       padding: 0.65rem; 
+       color: gray;
+} 
+.User-Profile-Wrapper {
+    display: flex; 
+    height: 100%; 
+    align-items: center; 
+    gap: 8px;
+    position: relative;
+} 
+.Username-header-container {
+    font-family: 'Roboto', sans-serif;
+    color: #111827dc; 
+} 
+.Menu-Icon-Container i {
+    display: none;
+}
+.Menu-Icon-Container i:hover{
+     background-color: lavender; 
+     color: royalblue;
+     cursor: pointer; 
+} 
+.Nav-Links-Container {
+     display: flex; 
+     gap: 2rem;  
+} 
+.Nav-Links-Container li {
+    list-style-type: none;
+}
+.Nav-link {
+      font-size: 1rem; 
+     color: #111827; 
+     text-decoration: none;
+     font-family: 'Poppins', sans-serif; 
+     padding: 0.6rem
+}
+.Nav-link:hover {
+    background-color: lavender;
+    border: 1px solid #2563eb;
+} 
+
+@media(max-width: 768px) {
+    .Nav-link {
+        display: none;
+    } 
+    .Username-header-container {
+        font-size: 0.8rem;  
+    } 
+    .User-Profile-Wrapper {
+        flex-wrap: wrap;
+    } 
+    .Menu-Icon-Container i {
+    display: block;
+   }   
+   .NavLinks-div-Modal {
+    background-color: #fff;
+     display: flex; 
+     border-radius: 10px; 
+     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    position: absolute;
+    top: 40px;  
+    right: 0;   
+    z-index: 999; /* Ensures it's above everything */ 
+    padding: 1rem;
+    gap: 1rem; 
+    border: solid 0.5px rgb(0, 0, 0, 0.2)
+  }
+  .Nav-link-modal {
+      text-decoration: none; 
+      color: #111827; 
+      font-family: 'Poppins', sans-serif;
+  }
+   .NavLinks-List li {
+        text-decoration: none; 
+        list-style-type: none; 
+   } 
+     .NavLinks-List { 
+        display: flex; 
+        flex-direction: column;
+        gap: 1rem;
+   }   
+   .Nav-link-modal:hover {
+           background-color: lightgray;
+   }
+   }

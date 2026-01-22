@@ -1,0 +1,216 @@
+/*Styling of Expense page begins from here*/ 
+.Expense-Parent-Container {
+    display: flex; 
+     max-width: 1100px; 
+     width: 100%;
+     min-height: 450px; 
+}
+.Expense-top-headers {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* no forced vertical centering */
+  align-items: center;
+  width: 100%;
+  font-family: 'Roboto', sans-serif;
+  color: #fff;
+  gap: 1rem;
+  padding-top: 3rem;
+}
+
+.Expense-Input-Container {
+    width: 35%;
+}
+.Expense-Input {
+    width: 100%;
+  padding: 0.8rem;
+ border: 1px solid transparent; 
+    outline: none; 
+    border-radius: 10px;
+}
+.Expense-Input:focus {
+     border-color: #4d91fe; 
+} 
+.Add-Expense-btn-Container {
+    width: 8%;
+}
+.Add-Expense-btn {
+    background: #4d91fe;
+    border: none;
+    color: #fff;
+    padding: 0.8rem;
+    font-family: 'Poppins', sans-serif; 
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    width: 100%;
+}
+.Add-Expense-btn:hover {
+    background-color: #4089ff;
+}
+.Add-Expense-btn:disabled {
+     background-color: #2564ebc4; 
+    opacity: 0.6;
+}
+.Modal-Overlay {
+    height: 100vh; 
+    width: 100vw;
+    background: rgba(0, 0, 0, 0.5); 
+    position: fixed; 
+    top: 0;
+    left: 0;
+    z-index: 999;
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+} 
+.Modal-div {
+    background-color: #fff; 
+    display: flex; 
+    flex-direction: column; 
+    width: 30%;
+    height: 40%;
+    border-radius: 10px;
+    z-index: 1000;
+    align-items: center;
+    gap: 1rem;
+    color: #111827;
+} 
+.Input {
+    width: 70%;
+  padding: 0.8rem;
+  border: 1px solid #ccc; /* Default state */
+  border-radius: 8px; /* Rounded corners */
+}
+.Option-btn {
+    width: 30%;
+    background-color: #fff;
+    border: none;
+    color: #111827; 
+    font-size: 1rem;
+    font-family: 'Poppins', sans-serif;
+    padding: 0.5rem;
+}
+.Option-btn:hover {
+    background-color: lightgray;
+    border: 1px solid #2563eb;
+    cursor: pointer;
+}
+.Category-list-container {
+    display: flex;
+    list-style-type: none;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+}
+.Enter-Category-btn {
+  background-color: blue; 
+  color: #fff;
+  font-family: 'Poppins', sans-serif; 
+  padding: 0.5rem;
+}  
+.Enter-Category-btn:hover {
+  background-color: #4285f4; 
+  cursor: pointer;
+} 
+/*Styling for left side vertical Navigation bar in expense page starts from here*/
+.Expense-Categories-NavBar {
+    background-color: #222222;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.5); 
+    padding: 0.8rem; 
+    height: 100%;
+    width: 25%;
+    margin-top: 2rem;
+}
+.Category-Routes-lists {
+    display: flex; 
+    flex-direction: column;
+    gap: 1rem; 
+    text-align: center; 
+    list-style-type: none;
+} 
+.Category-Routes-lists li:hover {
+    background-color: #333333
+}
+.Link{
+     text-decoration: none; 
+     color: #ccc; 
+     font-family: 'Poppins', sans-serif; 
+     font-size: 1.5rem;
+} 
+.Expense-Nav-Menu-Icon-Container i {
+    color: #fff;
+    font-size: 1.3rem;
+    margin-top: 8px;
+    display: none;
+} 
+.Expense-Nav-Menu-Icon-Container i:hover {
+    background-color: #2a2a2a;
+    cursor: pointer;
+} 
+/*Styling for Expense Card section begins from here*/ 
+.Expense-Cards-Container-Parent {
+   background-color: #1f1f1f;
+   padding: 1rem;
+   min-height: 50vh;
+}
+.Expense-Card-Container {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+.Expense-Card {
+    background-color: #2a2a2a; 
+    color: #ccc;
+    width: 18%;
+    padding: 1rem;
+    min-height: 50vh;
+    height: auto;
+    border-radius: 12px;
+    transition: transform ease 0.3s, box-shadow ease 0.3s;
+    display: flex; 
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+    gap: 1rem;
+}
+
+.Expense-Card h2 {
+    font-size: 1.4rem; 
+}
+
+.Expense-Card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+.Paid-Expense-Card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+.card-amount h2 {
+    color: gold;
+}
+.Mark-As-Paid-Btn {
+    background-color: #2a2a2a;
+    border: none;
+    padding: 1rem;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    color: #ccc;
+}
+.Mark-As-Paid-Btn:hover {
+    background-color: #1a1a1a;
+    cursor: pointer;
+}
+.Delete-Expense-Btn {
+    background-color: #2a2a2a;
+    border: none;
+    padding: 1rem;
+    font-size: 1rem;
+    color: #fff;
+    transition: transform ease 0.3s;
+}
+.Delete-Expense-Btn:hover {
+    color: #4089ff;
+    background-color: #3a3a3a; 
+    cursor: pointer;
+    transform: translateY(-5px);
+}
