@@ -1,6 +1,4 @@
 import "../css/HomePage.css";
-import { useState, useEffect } from 'react'; 
-import {Chart as ChartJs} from "chart.js/auto";
 import {Bar} from "react-chartjs-2";
 
 function selectUserCurrencySymbol(e, supportedCurrencies,setUserCurrency) {
@@ -15,7 +13,7 @@ export default function Home({
   previousMonthExpenses, 
   PreviousMonth_CategoryExpenses,
   supportedCurrencies,
-  userCurrency, setUserCurrency
+  userCurrency, setUserCurrency,chartOptions
 }) {
   let Expenses_Chart_Data = {};
 
@@ -70,7 +68,7 @@ export default function Home({
         <select className="Currency-Input-Select"
          onChange={(e)=>selectUserCurrencySymbol(e,supportedCurrencies,setUserCurrency)}>
           {supportedCurrencies.map(value => {
-            return <option value={value.code}>{value.code}</option>
+            return <option value={value.code} key={value.id}>{value.code}</option>
           })}
         </select>
       </div>
@@ -100,7 +98,7 @@ export default function Home({
         </div>
         <div className="Expense-Comparision-Charts-Container" 
         style={{ width: "50%", maxWidth: "500px", margin: "0 auto"}}>
-         <Bar data={Expenses_Chart_Data} style={{color : "red"}}/>
+         <Bar data={Expenses_Chart_Data} options={chartOptions}/>
          {PreviousMonthExpensesTotal > thisMonthExpensesTotal ? <p>Decreased by -{Percentage_Charge}%</p> : <p>Increased by +{Percentage_Charge}%</p>}
         </div>
       </div>

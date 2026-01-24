@@ -1,0 +1,8 @@
+.NavBar-Outlet-Flex-Wrapper {
+    display: flex;
+    gap: 2rem;
+    width: 100%
+}
+.History-Outlet-Container {
+     flex: 1;                        
+}

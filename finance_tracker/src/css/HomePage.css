@@ -1,9 +1,6 @@
 .Whole {
     width: 100%;
-    height: 110vh;
     display: flex;
-    justify-content: center;
-     align-items: center;
      flex-direction: column;
 }
 .Home-Page-Parent-Div {
@@ -40,6 +37,7 @@
     align-items: center;     
     padding: 1rem;           
     min-height: 300px;
+    height: 350px;
 }
 .Currency-Select-Container {
     color: #ededed; 
@@ -56,4 +54,42 @@
 .Currency-Input-Select {
     padding: 0.7rem; 
     cursor: pointer;
+}
+
+@media(max-width: 375px) {
+    .Whole {
+        min-height: auto;
+        height: auto;
+        align-items: stretch;
+        justify-content: flex-start;
+    }
+} 
+@media(max-width: 768px) {
+     .Whole {
+        min-height: auto;
+        height: auto;
+        align-items: stretch;
+        justify-content: flex-start;
+    }  
+    .Home-Page-Parent-Div {
+        width: 100%;
+    }
+    .Home-Page-Expense-Overview-Cards-Container {
+        gap: 1rem;
+        flex-direction: column;
+        align-items: center;
+    }
+    .Expense-Category-Total-Review-Card {
+        width: 90%;
+    } 
+    .Expense-Comparision-Charts-Container {
+        height: 300px;
+    }
+}
+@media (min-width: 769px) {
+  .Whole {
+    min-height: 110vh;
+    justify-content: center;
+     align-items: center;
+  }
 }

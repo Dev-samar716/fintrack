@@ -3,7 +3,6 @@ import { createHashRouter, RouterProvider, Outlet } from 'react-router-dom';
 import {Link} from 'react-router-dom';
 import './css/App.css';
 import Welcome from './components/Welcome.jsx' 
-import Sign_Up from './components/Signup.jsx' 
 import NavHeader from './components/WelcomePageNav.jsx' 
 import './css/Welcome.css'; 
 import Navigation_Bar from './components/NavBar.jsx'
@@ -18,10 +17,43 @@ import OtherExpenses from './components/other.jsx';
 import EducationExpenses from './components/Education.jsx';
 import Income from './components/income.jsx';
 import Expense_History from './components/ExpenseHistory.jsx';
-function AppLayout({userInfo,userName}) {
+import Income_History from './components/IncomeHistory.jsx';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Tooltip,
+  Legend,
+} from "chart.js";
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Tooltip,
+  Legend
+);
+
+function HistoryLayout({Vertical_Side_NavBar}) {
+   const NavLinks_Array = ["Expense-History", "Income-History", "Savings-History"];
+  return( 
+    <>
+   <Navigation_Bar /> 
+   <div className='NavBar-Outlet-Flex-Wrapper'> {/**Styling available in app.css */}
+    <Vertical_Side_NavBar NavLinks_Array={NavLinks_Array}/>
+    <div className='History-Outlet-Container'> {/**Styling for this available in app.css */}
+     <Outlet />
+    </div>
+   </div>
+   </>
+  );
+}
+
+function AppLayout() {
    return( 
     <>
-  <Navigation_Bar userInfo={userInfo} userName={userName}/> 
+  <Navigation_Bar /> 
   <Outlet /> 
   </>
    );
@@ -50,17 +82,8 @@ function App() {
   10: "November",
   11: "December"
 }; 
-   const [userName, setUserName] = useState(()=> {
-        const saved = localStorage.getItem('User_Name'); 
-        return saved ? JSON.parse(saved) : ('');
-   }); //to store the userName
-    const [password,setPassword] = useState(''); //to store the password 
-    const [email, setEmail] = useState('') // to store the email
-    const [userInfo, setUserInfo] = useState(()=> {
-       const saved = localStorage.getItem('User_Info');
-       return saved ? JSON.parse(saved) : [];
-    }) 
-    const [expense, setExpense] = useState(()=> { // This is for storing the User Expense
+
+    const [expense, setExpense] = useState(()=> { 
          const saved = localStorage.getItem('Expense');
          return saved ? JSON.parse(saved) : ('');
     });
@@ -122,7 +145,7 @@ function App() {
    // Responsible for returning an adaptable vertical nav-bar, reusable across various components.
  function Vertical_Side_NavBar({NavLinks_Array}) {
   return(
-    <div className="Expense-Categories-NavBar">
+   <div className="Expense-Categories-NavBar">
                <ul className="Category-Routes-lists">
                        {NavLinks_Array.map(value => {
      return <li><Link to={value.toLowerCase().replace(/\s+/g, "")} className='Link'>{value}</Link></li>
@@ -180,13 +203,50 @@ function App() {
     ];
   
    const supportedCurrencies = [
-  {code: "USD", symbol: "$"},
-  {code: "INR", symbol: "₹"},
-  {code: "EUR", symbol: "€"},
-  {code: "GBP", symbol: "£"},
-  {code: "JPY", symbol: "¥"},
-  {code: "NPR", symbol: "₹"}
+  {code: "NPR", symbol: "₹", id: 1},
+  {code: "INR", symbol: "₹", id: 2},
+  {code: "USD", symbol: "$", id: 6},
+  {code: "EUR", symbol: "€", id: 3},
+  {code: "GBP", symbol: "£", id: 4},
+  {code: "JPY", symbol: "¥", id: 5},
 ];
+const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December"
+];
+/**Below object is AI-generated code to optimize the chart for mobile, as chart.jsx layout is very non-responsive 
+for smaller screens, and challenging to optimize perfectly for mobile screens.**/
+const chartOptions = {
+  responsive: true,
+  maintainAspectRatio: false, // 🚨 THIS FIXES MOBILE
+  indexAxis: "x", // FORCE vertical bars
+  plugins: {
+    legend: {
+      labels: {
+        color: "white",
+      },
+    },
+  },
+  scales: {
+    x: {
+      ticks: { color: "white" },
+    },
+    y: {
+      ticks: { color: "white" },
+    },
+  },
+};
+
 
    // Finding total category expensess
   const Category_Expenses = { // Finding totals of each category expenses of the current month
@@ -214,9 +274,6 @@ function App() {
       "Investment": getIncomeSourceTotal(thisMonthIncome, "investment"),
       "Other": getIncomeSourceTotal(thisMonthIncome, "other")
   }
-    useEffect(()=> {
-      localStorage.setItem('User_Name', JSON.stringify(userName))
-    },[userName])
 
     useEffect(()=>{
        localStorage.setItem('Expense', JSON.stringify(expense))
@@ -242,13 +299,6 @@ function App() {
       localStorage.setItem('User_Currency', JSON.stringify(userCurrency))
     },[userCurrency])
 
-    const addUserInfo = () => { 
-    const salt = "#salt"; //keyword or a salt that's supposed to be mixed with the real passsword to encode it,
-    //  an attempt to implement real world logic in simplified form.
-    const Encoded_password = password + salt; // This is the encoded password
-    let User_Data = {Username : userName, password: Encoded_password, email: email};
-    setUserInfo(prev => [...prev, User_Data]);
-  }
   const addExpenseInfo = () => { // Responsible for adding Expense info 
     const createdAt = Date.now()
      let Expense_Date = new Date(createdAt).getMonth();
@@ -289,18 +339,15 @@ function App() {
     element: <Nav_Header />,
     children: [
       { index: "/", element: <Welcome /> }, 
-      { path: "/signup", element: <Sign_Up userName={userName} setUserName={setUserName}
-          password={password} setPassword={setPassword}
-          email={email} setEmail={setEmail} addUserInfo={addUserInfo}/> }
     ]
   },
   {
-    element: <AppLayout userInfo={userInfo} userName={userName} />, 
+    element: <AppLayout />, 
     children: [
       {path: "home", element: <Home Category_Expenses={Category_Expenses}
       thisMonthExpense={thisMonthExpense} previousMonthExpenses={previousMonthExpenses} 
       PreviousMonth_CategoryExpenses={PreviousMonth_CategoryExpenses} supportedCurrencies={supportedCurrencies}
-      userCurrency={userCurrency} setUserCurrency={setUserCurrency}/>},
+      userCurrency={userCurrency} setUserCurrency={setUserCurrency} chartOptions={chartOptions}/>},
 
       {path: "expenses", element: <Expense expense={expense} setExpense={setExpense} setExpenseCategory={setExpenseCategory}
        Expense_Categories={Expense_Categories} expenseCategory={expenseCategory} expenseAmount={expenseAmount} setExpenseAmount={setExpenseAmount}
@@ -326,19 +373,21 @@ function App() {
       addIncomeInfo={addIncomeInfo} incomeArr={incomeArr} setThisMonthIncome={setThisMonthIncome}
       thisMonthIncome={thisMonthIncome} ThisMonth_IncomeSourcesTotal={ThisMonth_IncomeSourcesTotal}
       userCurrency={userCurrency}/>},
-
-      {path: "expense-history", element: <Expense_History Vertical_Side_NavBar={Vertical_Side_NavBar}
-      selectedMonth={selectedMonth} setSelectedMonth={setSelectedMonth} expenseArr={expenseArr}
-      userCurrency={userCurrency}/>}
     ]
   },
+  {
+    element: <HistoryLayout Vertical_Side_NavBar={Vertical_Side_NavBar} />,
+    children: [
+      {path: "expense-history", element: <Expense_History selectedMonth={selectedMonth} 
+      setSelectedMonth={setSelectedMonth} expenseArr={expenseArr} userCurrency={userCurrency} 
+      months={months}/>},
+
+      {path: "income-history", element: <Income_History selectedMonth={selectedMonth} 
+      setSelectedMonth={setSelectedMonth} incomeArr={incomeArr} userCurrency={userCurrency} 
+      months={months}/>}
+    ]
+  }
 ])
-
-
-
-  useEffect(()=> {
-    localStorage.setItem('User_Info', JSON.stringify(userInfo));
-  },[userInfo])
  
    return(
    <> 

@@ -14,9 +14,8 @@ function NavLinks_Container() {
     );
 }
 
-export default function Navigation_Bar({userInfo,userName}) {
+export default function Navigation_Bar() {
     const [menuClicked, setMenuClicked] = useState(false);
-    const Correct_UserInfo = userInfo.find(value => value.Username === userName);
 
     useEffect(()=> {
     // Background color becomes dark when this component is rendered 
@@ -44,9 +43,6 @@ export default function Navigation_Bar({userInfo,userName}) {
           <i className="fas fa-user"></i> 
         </div> 
         {menuClicked && <NavLinks_Container />}
-        <div className="Username-header-container">
-             <h2>{Correct_UserInfo.Username}</h2>
-        </div>
          <div className="Menu-Icon-Container">
         <i className="fas fa-bars" onClick={()=> setMenuClicked(!menuClicked)}></i>
         </div>

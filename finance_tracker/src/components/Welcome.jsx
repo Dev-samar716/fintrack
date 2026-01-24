@@ -12,7 +12,7 @@ export default function Welcome() {
         </p>
 
         <div className="cta-buttons">
-          <Link to="/signup" className="primary-btn">
+          <Link to="/home" className="primary-btn">
             Get Started
           </Link>
           <Link to="/login" className="secondary-btn">

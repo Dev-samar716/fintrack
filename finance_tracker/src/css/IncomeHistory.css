@@ -1,0 +1,71 @@
+.Month-Select-Container {
+    color: #ededed; 
+    font-size: 1rem;
+    font-family: 'Poppins', sans-serif;
+    padding: 1rem;
+     display: flex;
+} 
+.Month-Select-Container label {
+    font-size: 1.5rem;
+    font-weight: 600;
+    padding: 0.7rem;
+}
+.Month-Input-Select {
+    padding: 0.7rem; 
+    cursor: pointer;
+}
+.Income-Card-Container {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+.Income-Card-Container h1 {
+    color: #ededed;
+    font-family: 'Poppins',sans-serif;
+    text-align: center;
+}
+.Selected-Month-Total-Amount-Container {
+    padding: 1rem;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+} 
+.Selected-Month-Total-Amount-Container h2{
+      margin-left: auto;
+    margin-right: auto;
+    color: #ededed;
+    font-family: 'Poppins',sans-serif;
+    text-align: center;
+}
+.Selected-Month-Total-Amount-Span {
+    color: gold;
+    font-family: 'Poppins',sans-serif;
+    text-align: center;
+}
+.Income-Card {
+     background-color: #2a2a2a; 
+    color: #ccc;
+    width: 18%;
+    padding: 1rem;
+    min-height: 50vh;
+    height: auto;
+    border-radius: 12px;
+    transition: transform ease 0.3s, box-shadow ease 0.3s;
+    display: flex; 
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+    gap: 1rem;
+}
+.Income-Card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+.Income-Card h2 {
+    font-size: 1.4rem; 
+}
+
+
