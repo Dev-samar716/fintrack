@@ -9,32 +9,33 @@ export default function Income({
   setThisMonthIncome,
   thisMonthIncome,
   ThisMonth_IncomeSourcesTotal,
-  userCurrency
+  userCurrency, ThisMonth_IncomeTotal,
+  setPreviousMonthIncome
 }) {
-     const now = new Date();
-    const currentMonth = now.getMonth();
-    const currentYear = now.getFullYear();
+     let now = new Date();
+    let currentMonth = now.getMonth();
+    let currentYear = now.getFullYear();
    
    useEffect(()=> {
-      const ThisMonthIncome = incomeArr.filter(value => {
-     const IncomeMonth = new Date(value.createdAt).getMonth();  
-     const IncomeYear = new Date(value.createdAt).getFullYear();
+      let ThisMonthIncome = incomeArr.filter(value => {
+     let IncomeMonth = new Date(value.createdAt).getMonth();  
+     let IncomeYear = new Date(value.createdAt).getFullYear();
      return(
       currentMonth === IncomeMonth && currentYear === IncomeYear
      )
   }) 
-  const sorted = ThisMonthIncome.sort((a,b) => b.Income_Amount - a.Income_Amount);
+  let PreviousMonthIncome = incomeArr.filter(value => {
+     let IncomeMonth = new Date(value.createdAt).getMonth(); 
+     let IncomeYear = new Date(value.createdAt).getFullYear();
+     return(
+      currentMonth - 1 === IncomeMonth && currentYear === IncomeYear
+     )
+  })
+  let sorted = ThisMonthIncome.sort((a,b) => b.Income_Amount - a.Income_Amount);
   setThisMonthIncome(sorted);
+  setPreviousMonthIncome(PreviousMonthIncome);
    }, [incomeArr])
 
-   useEffect(() => {
-          localStorage.setItem('Monthly_Income_Array', JSON.stringify(thisMonthIncome));
-     }, [thisMonthIncome]); 
-
-     // Calculating the total Income of this Month
-     const ThisMonth_IncomeTotal = thisMonthIncome.reduce((x,y)=> {
-         return x + Number(y.Income_Amount);
-     }, 0)
   return (
     <div className="Income-Page-Container">
       

@@ -105,11 +105,11 @@ function App() {
     //This is for storing the Current Months Expenses which are relevant for rendering and calculating
     const [thisMonthExpense, setThisMonthExpense] = useState(() => {
     const saved = localStorage.getItem('Monthly_Expense_Array');
-    return saved ? JSON.parse(saved) : [''];
+    return saved ? JSON.parse(saved) : [];
   }); 
    const [previousMonthExpenses, setPreviousMonthExpenses] = useState(()=> {
       const saved = localStorage.getItem('PreviousMonth_Expense_Array');
-      return saved ? JSON.parse(saved) : [''];
+      return saved ? JSON.parse(saved) : [];
    })
    const [incomeSources, setIncomeSources] = useState('');
    const [incomeAmount, setIncomeAmount] = useState('');
@@ -121,6 +121,11 @@ function App() {
 
    const [thisMonthIncome, setThisMonthIncome] = useState(()=> {
     const saved = localStorage.getItem('Monthly_Income_Array');
+    return saved ? JSON.parse(saved) : [''];
+   })
+
+   const [previousMonthIncome, setPreviousMonthIncome] = useState(()=> {
+    const saved = localStorage.getItem('Previous_Month_Income_Array');
     return saved ? JSON.parse(saved) : [''];
    })
 
@@ -143,7 +148,7 @@ function App() {
      .reduce((sum,item) => sum + Number(item.Income_Amount),  0)
    }
    // Responsible for returning an adaptable vertical nav-bar, reusable across various components.
- function Vertical_Side_NavBar({NavLinks_Array}) {
+ function Vertical_Side_NavBar({NavLinks_Array = [] }) {
   return(
    <div className="Expense-Categories-NavBar">
                <ul className="Category-Routes-lists">
@@ -154,6 +159,14 @@ function App() {
               </div>
   )
 }
+// Calculating the total Income of this Month
+     let ThisMonth_IncomeTotal = thisMonthIncome.reduce((x,y)=> {
+         return x + Number(y.Income_Amount);
+     }, 0);
+     // Calculating the total Income of previous month
+    let previousMonth_IncomeTotal = previousMonthIncome.reduce((a,b)=> {
+         return a + Number(b?.Income_Amount || 0);
+    }, 0);
      const Housing_Expenses = thisMonthExpense.filter(value => value.Expense_Category === "#Housing");
      const Education_Expenses = thisMonthExpense.filter(value => value.Expense_Category === "#Education");
      const Food_Groceries = thisMonthExpense.filter(value => value.Expense_Category === "#Food & Groceries");
@@ -179,7 +192,7 @@ function App() {
               expenseDate.getMonth() === currentMonth - 1 && expenseDate.getFullYear() === currentYear
            )
            })
-          const thisMonthExpense_sorted = thisMonth_ExpenseData.sort((a,b)=>b.Expense_Amount-a.Expense_Amount);
+          let thisMonthExpense_sorted = thisMonth_ExpenseData.sort((a,b)=>b.Expense_Amount-a.Expense_Amount);
                                         
       
           const previousMonthExpenses_sorted = PreviousMonth_ExpenseData.sort((a,b)=>b.Expense_Amount-a.Expense_Amount);
@@ -188,14 +201,22 @@ function App() {
           setPreviousMonthExpenses(previousMonthExpenses_sorted);
         }, [expenseArr]);
       
-        // Save current month's expenses to localStorage
+        // Save current month's expenses data to localStorage
         useEffect(() => {
              localStorage.setItem('Monthly_Expense_Array', JSON.stringify(thisMonthExpense));
         }, [thisMonthExpense]); 
-        //Save previous month's expense to localStorage 
+        //Save previous month's expense data to localStorage 
         useEffect(()=> {
             localStorage.setItem('PreviousMonth_Expense_Array', JSON.stringify(previousMonthExpenses));
         }, [previousMonthExpenses])
+        // Save current month's income data to localStorage
+         useEffect(() => {
+          localStorage.setItem('Monthly_Income_Array', JSON.stringify(thisMonthIncome));
+     }, [thisMonthIncome]); 
+        // Save previous month's income data to localStorage 
+        useEffect(()=> {
+        localStorage.setItem('Previous_Month_Income_Array', JSON.stringify(previousMonthIncome));
+        }, [previousMonthIncome])
       
     
     const Expense_Categories = ["#housing", "#transportation", "#food & groceries", "#education",
@@ -247,34 +268,87 @@ const chartOptions = {
   },
 };
 
-
    // Finding total category expensess
-  const Category_Expenses = { // Finding totals of each category expenses of the current month
-     "#Housing" : getCategoryTotal(thisMonthExpense, "#Housing"),
-     "#Transportation": getCategoryTotal(thisMonthExpense, "#Transportation"),
-     "#Education": getCategoryTotal(thisMonthExpense, "#Education"), 
-      "#Personal": getCategoryTotal(thisMonthExpense, "#Personal"),
-      "#Foods & Groceries": getCategoryTotal(thisMonthExpense, "#Foods & Groceries"),
-      "#Other": getCategoryTotal(thisMonthExpense, "#Other")
+  let Category_Expenses = { // Finding totals of each category expenses of the current month
+     Housing : getCategoryTotal(thisMonthExpense, "#Housing"),
+     Transportation: getCategoryTotal(thisMonthExpense, "#Transportation"),
+     Education: getCategoryTotal(thisMonthExpense, "#Education"), 
+     Personal: getCategoryTotal(thisMonthExpense, "#Personal"),
+     FoodsGroceries: getCategoryTotal(thisMonthExpense, "#Foods & Groceries"),
+      Other: getCategoryTotal(thisMonthExpense, "#Other")
   }
-  const PreviousMonth_CategoryExpenses = { //Finding totals of each category expenses of the previous month
-     "#Housing" : getCategoryTotal(previousMonthExpenses, "#Housing"),
-     "#Transportation": getCategoryTotal(previousMonthExpenses, "#Transportation"),
-     "#Education": getCategoryTotal(previousMonthExpenses, "#Education"), 
-      "#Personal": getCategoryTotal(previousMonthExpenses, "#Personal"),
-      "#Foods & Groceries": getCategoryTotal(previousMonthExpenses, "#Foods & Groceries"),
-      "#Other": getCategoryTotal(previousMonthExpenses, "#Other")
+  let PreviousMonth_CategoryExpenses = { //Finding totals of each category expenses of the previous month
+     Housing : getCategoryTotal(previousMonthExpenses, "#Housing"),
+     Transportation: getCategoryTotal(previousMonthExpenses, "#Transportation"),
+     Education : getCategoryTotal(previousMonthExpenses, "#Education"), 
+     Personal: getCategoryTotal(previousMonthExpenses, "#Personal"),
+     FoodsGroceries: getCategoryTotal(previousMonthExpenses, "#Foods & Groceries"),
+     Other: getCategoryTotal(previousMonthExpenses, "#Other")
   }
       
   //Finding total of each Income source 
-  const ThisMonth_IncomeSourcesTotal = { //Finding totals of each income source of this month
-      "Job": getIncomeSourceTotal(thisMonthIncome, "job"),
-      "Freelance": getIncomeSourceTotal(thisMonthIncome, "freelance"),
-      "Business": getIncomeSourceTotal(thisMonthIncome, "business"), 
-      "Investment": getIncomeSourceTotal(thisMonthIncome, "investment"),
-      "Other": getIncomeSourceTotal(thisMonthIncome, "other")
+  let ThisMonth_IncomeSourcesTotal = { //Finding totals of each income source of this month
+      Job: getIncomeSourceTotal(thisMonthIncome, "job"),
+      Freelance: getIncomeSourceTotal(thisMonthIncome, "freelance"),
+      Business: getIncomeSourceTotal(thisMonthIncome, "business"), 
+      Investment: getIncomeSourceTotal(thisMonthIncome, "investment"),
+      Other: getIncomeSourceTotal(thisMonthIncome, "other")
   }
 
+  //Finding total of each Income source 
+  let previousMonth_IncomeSourcesTotal = { //Finding totals of each income source of previous month
+      Job: getIncomeSourceTotal(previousMonthIncome, "job"),
+      Freelance: getIncomeSourceTotal(previousMonthIncome, "freelance"),
+      Business: getIncomeSourceTotal(previousMonthIncome, "business"), 
+      Investment: getIncomeSourceTotal(previousMonthIncome, "investment"),
+      Other: getIncomeSourceTotal(previousMonthIncome, "other")
+  }
+  //Below is the chart data for ranking of income sources of current month based on their total 
+  let Income_Sources_Ranking_ChartData = {
+    labels: ["Job", "Freelance", "Business", "Investment", "Other"], 
+    datasets: [
+      {
+        label: ["Income Source Ranking"],
+        data: [ThisMonth_IncomeSourcesTotal.Job, ThisMonth_IncomeSourcesTotal.Freelance,
+        ThisMonth_IncomeSourcesTotal.Business, ThisMonth_IncomeSourcesTotal.Investment, 
+        ThisMonth_IncomeSourcesTotal.Other
+        ],
+        backgroundColor: [
+              "yellow", 
+              "blue",
+              "lime",
+              "red",
+              "pink",
+              "purple",
+              "white"
+            ]
+      }
+    ]
+  }
+  // Below is the chart data for ranking of expense categories based on their current Month Total
+let categories_ranking_chartData = {
+        labels: ["Housing", "Transportation", "Education", "Personal", "Food&Groceries", "Other"],
+        datasets : [
+           {
+            label: ["Category Ranking"],
+            data: [
+              Category_Expenses.Housing, Category_Expenses.Transportation, 
+              Category_Expenses.Education, Category_Expenses.Personal, 
+              Category_Expenses.FoodsGroceries, Category_Expenses.Other
+            ],
+            backgroundColor: [
+              "yellow", 
+              "blue",
+              "lime",
+              "red",
+              "pink",
+              "purple",
+              "white"
+            ]
+           }
+        ]
+    }
+  
     useEffect(()=>{
        localStorage.setItem('Expense', JSON.stringify(expense))
     },[expense])
@@ -347,7 +421,11 @@ const chartOptions = {
       {path: "home", element: <Home Category_Expenses={Category_Expenses}
       thisMonthExpense={thisMonthExpense} previousMonthExpenses={previousMonthExpenses} 
       PreviousMonth_CategoryExpenses={PreviousMonth_CategoryExpenses} supportedCurrencies={supportedCurrencies}
-      userCurrency={userCurrency} setUserCurrency={setUserCurrency} chartOptions={chartOptions}/>},
+      userCurrency={userCurrency} setUserCurrency={setUserCurrency} chartOptions={chartOptions} 
+      ThisMonth_IncomeSourcesTotal={ThisMonth_IncomeSourcesTotal} ThisMonth_IncomeTotal={ThisMonth_IncomeTotal}
+      categories_ranking_chartData={categories_ranking_chartData} Income_Sources_Ranking_ChartData={Income_Sources_Ranking_ChartData}
+      previousMonth_IncomeSourcesTotal={previousMonth_IncomeSourcesTotal} previousMonth_IncomeTotal={previousMonth_IncomeTotal}
+      thisMonthIncome={thisMonthIncome} previousMonthIncome={previousMonthIncome}/>},
 
       {path: "expenses", element: <Expense expense={expense} setExpense={setExpense} setExpenseCategory={setExpenseCategory}
        Expense_Categories={Expense_Categories} expenseCategory={expenseCategory} expenseAmount={expenseAmount} setExpenseAmount={setExpenseAmount}
@@ -372,7 +450,8 @@ const chartOptions = {
       {path: "income", element: <Income setIncomeSources={setIncomeSources} setIncomeAmount={setIncomeAmount}
       addIncomeInfo={addIncomeInfo} incomeArr={incomeArr} setThisMonthIncome={setThisMonthIncome}
       thisMonthIncome={thisMonthIncome} ThisMonth_IncomeSourcesTotal={ThisMonth_IncomeSourcesTotal}
-      userCurrency={userCurrency}/>},
+      userCurrency={userCurrency} ThisMonth_IncomeTotal={ThisMonth_IncomeTotal} 
+      setPreviousMonthIncome={setPreviousMonthIncome}/>},
     ]
   },
   {

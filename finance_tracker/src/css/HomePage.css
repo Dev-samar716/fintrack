@@ -2,7 +2,9 @@
     width: 100%;
     display: flex;
      flex-direction: column;
+     gap: 3rem;
 }
+
 .Home-Page-Parent-Div {
      background-color: #121212;
      color: #fff;
@@ -11,34 +13,82 @@
      width: 90%; 
      display: flex;
      flex-direction: column;
+     gap: 1.5rem
 }
-.Home-Page-Expense-Overview-Cards-Container {
+
+.Overview-Cards-Container {
       display: flex; 
        gap: 15rem;
         width: 100%;
 }
-.Expense-Category-Total-Review-Card {
+
+.Overview-Card {
     background-color: #2a2a2a;
     padding: 1rem;
     border-radius: 10px;
 }
+
 .Total-p {
       font-size: 1.5rem; 
       color: gold
 }
-.Category-total-Expense {
+
+.Breakdown-Item {
     list-style-type: none;
     font-size: 1.3rem;
 } 
-.Expense-Comparision-Charts-Container {
+
+.Charts-Section {
     width: 100%;
-    display: flex;           
-    justify-content: center; 
-    align-items: center;     
+    height: 100%;
+    display: flex; 
+    flex-direction: column;
+    gap: 3rem; 
+    align-items: center
+}
+
+.Charts-Section p{
+    font-size: 1.5rem;
+    font-family: 'Poppins', sans-serif;
+}
+
+.Chart-Container { 
+    display: flex; 
+    flex-direction: column;
+    width: 80%;         
     padding: 1rem;           
     min-height: 300px;
-    height: 350px;
+    height: 450px;
+    padding: 1rem;
+     gap: 1rem; 
 }
+
+.Chart-Wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex; 
+    flex-direction: column;
+     align-items: center;   
+    gap: 1rem; 
+}
+
+.Chart-Wrapper h2 {
+    text-align: center;
+}
+
+.Chart-Container-Wide {
+    display: flex; 
+    flex-direction: column;
+     align-items: center;
+    width: 100%;      
+    min-width: 50vw;   
+    padding: 1rem;           
+    min-height: 300px;
+    height: 450px;
+    padding: 1rem;
+     gap: 1rem; 
+}
+
 .Currency-Select-Container {
     color: #ededed; 
     font-size: 1rem;
@@ -46,11 +96,13 @@
     padding: 1rem;
      display: flex;
 } 
+
 .Currency-Select-Container label {
     font-size: 1.5rem;
     font-weight: 600;
     padding: 0.7rem;
 }
+
 .Currency-Input-Select {
     padding: 0.7rem; 
     cursor: pointer;
@@ -64,6 +116,7 @@
         justify-content: flex-start;
     }
 } 
+
 @media(max-width: 768px) {
      .Whole {
         min-height: auto;
@@ -71,21 +124,26 @@
         align-items: stretch;
         justify-content: flex-start;
     }  
+
     .Home-Page-Parent-Div {
         width: 100%;
     }
-    .Home-Page-Expense-Overview-Cards-Container {
+
+    .Overview-Cards-Container {
         gap: 1rem;
         flex-direction: column;
         align-items: center;
     }
-    .Expense-Category-Total-Review-Card {
+
+    .Overview-Card {
         width: 90%;
     } 
-    .Expense-Comparision-Charts-Container {
+
+    .Chart-Container {
         height: 300px;
     }
 }
+
 @media (min-width: 769px) {
   .Whole {
     min-height: 110vh;
