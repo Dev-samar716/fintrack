@@ -2,7 +2,7 @@ function Handle_Delete(id, setExpenseArr) {
   setExpenseArr(prev => prev.filter(value => value.id != id));
 }
 
-function Display_Education({Title, Amount, onDelete,Month,day,userCurrency}) {
+function Display_Education({Title, Amount, onDelete,Month,day,currencySymbol}) {
     return(
       <div className="Expense-Card"> 
       <div className="Delete-Expense-Btn-Container">
@@ -15,7 +15,7 @@ function Display_Education({Title, Amount, onDelete,Month,day,userCurrency}) {
     </div>
 
     <div className="card-amount">
-      <h2>{userCurrency}{Amount}</h2>
+      <h2>{currencySymbol}{Amount}</h2>
     </div>
      
       <div>
@@ -26,14 +26,14 @@ function Display_Education({Title, Amount, onDelete,Month,day,userCurrency}) {
     )
 }
 
-export default function EducationExpenses({Education_Expenses, setExpenseArr,userCurrency}) {
+export default function EducationExpenses({Education_Expenses, setExpenseArr,currencySymbol}) {
 
     return(
      <div className="Expense-Card-Container">
         {Education_Expenses.map(value => (
              <Display_Education Title={value.Expense_Title} Amount={value.Expense_Amount}
              onDelete={()=>Handle_Delete(value.id, setExpenseArr)} Month={value.Month} 
-             day={value.day} userCurrency={userCurrency} key={value.id} />
+             day={value.day} currencySymbol={currencySymbol} key={value.id} />
         ))}
      </div>
     );

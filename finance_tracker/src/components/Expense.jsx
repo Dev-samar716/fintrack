@@ -15,7 +15,7 @@ export default function Expense({
   Vertical_Side_NavBar
 }) { 
     const [modalVisibility, setModalVisibility] = useState(false);
-    const NavLinks_Array = ["Housing", "Transportation", "Food & Groceries", "Education",
+    const NavLinks_Array = ["View All","Housing", "Transportation", "Food & Groceries", "Education",
         "Personal", "Other"
     ];
     return( 

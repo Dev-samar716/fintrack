@@ -129,12 +129,13 @@ function App() {
     return saved ? JSON.parse(saved) : [''];
    })
 
-  const [userCurrency, setUserCurrency] = useState(()=>{
-    const saved = localStorage.getItem('User_Currency');
-    return saved ? JSON.parse(saved) : ('₹');
-  }) 
+  const [currency, setCurrency] = useState(()=> {
+     const saved = localStorage.getItem("Selected_Currency");
+     return saved ? JSON.parse(saved) : ("");
+   })
   // Responsible for tracking the desired Month's expense or income data selected by the user
   const [selectedMonth, setSelectedMonth] = useState(MONTH_MAP[new Date().getMonth()])
+
   // Responsible for returning the total expense rate of each category
   function getCategoryTotal(expenses, category) {
   return expenses
@@ -153,7 +154,7 @@ function App() {
    <div className="Expense-Categories-NavBar">
                <ul className="Category-Routes-lists">
                        {NavLinks_Array.map(value => {
-     return <li><Link to={value.toLowerCase().replace(/\s+/g, "")} className='Link'>{value}</Link></li>
+     return <li key={value}><Link to={value.toLowerCase().replace(/\s+/g, "")} className='Link'>{value}</Link></li>
                        })}
                     </ul>  
               </div>
@@ -217,20 +218,28 @@ function App() {
         useEffect(()=> {
         localStorage.setItem('Previous_Month_Income_Array', JSON.stringify(previousMonthIncome));
         }, [previousMonthIncome])
+
+        useEffect(()=> {
+          localStorage.setItem('Selected_Currency', JSON.stringify(currency));
+          },[currency])
       
     
     const Expense_Categories = ["#housing", "#transportation", "#food & groceries", "#education",
         "#personal", "#other"
     ];
+
   
    const supportedCurrencies = [
-  {code: "NPR", symbol: "₹", id: 1},
-  {code: "INR", symbol: "₹", id: 2},
-  {code: "USD", symbol: "$", id: 6},
-  {code: "EUR", symbol: "€", id: 3},
-  {code: "GBP", symbol: "£", id: 4},
-  {code: "JPY", symbol: "¥", id: 5},
-];
+  { code: "NPR", symbol: "₹" },
+  { code: "INR", symbol: "₹" },
+  { code: "USD", symbol: "$" },
+  { code: "EUR", symbol: "€" },
+  { code: "GBP", symbol: "£" },
+  { code: "JPY", symbol: "¥" }
+   ]
+    //currencySymbol variable is derived from an existing state to store the symbol of given currency
+  const currencySymbol = supportedCurrencies.find(c => c.code === currency)?.symbol || "";
+   
 const months = [
   "January",
   "February",
@@ -369,10 +378,6 @@ let categories_ranking_chartData = {
       localStorage.setItem('Income_Data', JSON.stringify(incomeArr))
     },[incomeArr])
 
-    useEffect(()=> {
-      localStorage.setItem('User_Currency', JSON.stringify(userCurrency))
-    },[userCurrency])
-
   const addExpenseInfo = () => { // Responsible for adding Expense info 
     const createdAt = Date.now()
      let Expense_Date = new Date(createdAt).getMonth();
@@ -421,36 +426,36 @@ let categories_ranking_chartData = {
       {path: "home", element: <Home Category_Expenses={Category_Expenses}
       thisMonthExpense={thisMonthExpense} previousMonthExpenses={previousMonthExpenses} 
       PreviousMonth_CategoryExpenses={PreviousMonth_CategoryExpenses} supportedCurrencies={supportedCurrencies}
-      userCurrency={userCurrency} setUserCurrency={setUserCurrency} chartOptions={chartOptions} 
+     currency={currency} setCurrency={setCurrency} chartOptions={chartOptions} 
       ThisMonth_IncomeSourcesTotal={ThisMonth_IncomeSourcesTotal} ThisMonth_IncomeTotal={ThisMonth_IncomeTotal}
       categories_ranking_chartData={categories_ranking_chartData} Income_Sources_Ranking_ChartData={Income_Sources_Ranking_ChartData}
       previousMonth_IncomeSourcesTotal={previousMonth_IncomeSourcesTotal} previousMonth_IncomeTotal={previousMonth_IncomeTotal}
-      thisMonthIncome={thisMonthIncome} previousMonthIncome={previousMonthIncome}/>},
+      thisMonthIncome={thisMonthIncome} previousMonthIncome={previousMonthIncome} currencySymbol={currencySymbol}/>},
 
       {path: "expenses", element: <Expense expense={expense} setExpense={setExpense} setExpenseCategory={setExpenseCategory}
        Expense_Categories={Expense_Categories} expenseCategory={expenseCategory} expenseAmount={expenseAmount} setExpenseAmount={setExpenseAmount}
        addExpenseInfo={addExpenseInfo} Vertical_Side_NavBar={Vertical_Side_NavBar}/>, 
        children: [
-      { path: "all", element: <AllExpenses expenseArr={expenseArr} setExpenseArr={setExpenseArr}
-       userCurrency={userCurrency}/>},
+      { path: "viewall", element: <AllExpenses expenseArr={expenseArr} setExpenseArr={setExpenseArr}
+       currencySymbol={currencySymbol}/>},
       { path: "housing", element: <HousingExpenses Housing_Expenses={Housing_Expenses} setExpenseArr={setExpenseArr}
-      userCurrency={userCurrency}/> },
+      currencySymbol={currencySymbol}/> },
       { path: "transportation", element: <TransportationExpenses Transportation_Expenses={Transportation_Expenses} setExpenseArr={setExpenseArr}
-      userCurrency={userCurrency}/>},
+      currencySymbol={currencySymbol}/>},
       { path: "food&groceries", element: <FoodGroceriesExpenses Food_Groceries={Food_Groceries} setExpenseArr={setExpenseArr}
-      userCurrency={userCurrency}/>},
+      currencySymbol={currencySymbol}/>},
       { path: "education", element: <EducationExpenses Education_Expenses={Education_Expenses} setExpenseArr={setExpenseArr}
-      userCurrency={userCurrency}/>},
+      currencySymbol={currencySymbol}/>},
       { path: "personal", element: <PersonalExpenses Personal_Expenses={Personal_Expenses} setExpenseArr={setExpenseArr}
-      userCurrency={userCurrency}/>},
+      currencySymbol={currencySymbol}/>},
       { path: "other", element: <OtherExpenses Other_Expenses={Other_Expenses} setExpenseArr={setExpenseArr}
-      userCurrency={userCurrency}/>}
+      currencySymbol={currencySymbol}/>}
        ]
       },
       {path: "income", element: <Income setIncomeSources={setIncomeSources} setIncomeAmount={setIncomeAmount}
       addIncomeInfo={addIncomeInfo} incomeArr={incomeArr} setThisMonthIncome={setThisMonthIncome}
       thisMonthIncome={thisMonthIncome} ThisMonth_IncomeSourcesTotal={ThisMonth_IncomeSourcesTotal}
-      userCurrency={userCurrency} ThisMonth_IncomeTotal={ThisMonth_IncomeTotal} 
+      currencySymbol={currencySymbol} ThisMonth_IncomeTotal={ThisMonth_IncomeTotal} 
       setPreviousMonthIncome={setPreviousMonthIncome}/>},
     ]
   },
@@ -458,11 +463,11 @@ let categories_ranking_chartData = {
     element: <HistoryLayout Vertical_Side_NavBar={Vertical_Side_NavBar} />,
     children: [
       {path: "expense-history", element: <Expense_History selectedMonth={selectedMonth} 
-      setSelectedMonth={setSelectedMonth} expenseArr={expenseArr} userCurrency={userCurrency} 
-      months={months}/>},
+      setSelectedMonth={setSelectedMonth} expenseArr={expenseArr} currencySymbol={currencySymbol} 
+      months={months} Expense_Categories={Expense_Categories}/>},
 
       {path: "income-history", element: <Income_History selectedMonth={selectedMonth} 
-      setSelectedMonth={setSelectedMonth} incomeArr={incomeArr} userCurrency={userCurrency} 
+      setSelectedMonth={setSelectedMonth} incomeArr={incomeArr} currencySymbol={currencySymbol} 
       months={months}/>}
     ]
   }

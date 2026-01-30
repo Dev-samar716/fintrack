@@ -9,7 +9,7 @@ export default function Income({
   setThisMonthIncome,
   thisMonthIncome,
   ThisMonth_IncomeSourcesTotal,
-  userCurrency, ThisMonth_IncomeTotal,
+  currencySymbol, ThisMonth_IncomeTotal,
   setPreviousMonthIncome
 }) {
      let now = new Date();
@@ -100,11 +100,11 @@ export default function Income({
       {/* Income Breakdown Section */}
       <div className="Income-Breakdown-Section-Container">
         <h2>📊Income Breakdown ({thisMonthIncome != '' && thisMonthIncome[0].Month})</h2>
-        <p>Total : {userCurrency}{ThisMonth_IncomeTotal}</p>
+        <p>Total : {currencySymbol}{ThisMonth_IncomeTotal}</p>
         {Object.entries(ThisMonth_IncomeSourcesTotal).map(([key, value]) => ( 
           // Rendering Object in list of key-value pairs and calculating percentage of value
           <li key={key}  className='Sources-total-Expense'>
-           {key} :  {userCurrency}{value} ({ThisMonth_IncomeTotal ? ((value / ThisMonth_IncomeTotal) * 100).toFixed(2) : 0}%)
+           {key} :  {currencySymbol}{value} ({ThisMonth_IncomeTotal ? ((value / ThisMonth_IncomeTotal) * 100).toFixed(2) : 0}%)
           </li>
         ))}
       </div>

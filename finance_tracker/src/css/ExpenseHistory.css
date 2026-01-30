@@ -1,16 +1,19 @@
-.Month-Select-Container {
+.Select-Container-Section {
+    display: flex;
+}
+.Select-Container {
     color: #ededed; 
     font-size: 1rem;
     font-family: 'Poppins', sans-serif;
     padding: 1rem;
      display: flex;
 } 
-.Month-Select-Container label {
+.Select-Container label {
     font-size: 1.5rem;
     font-weight: 600;
     padding: 0.7rem;
 }
-.Month-Input-Select {
+.Input-Select {
     padding: 0.7rem; 
     cursor: pointer;
 }

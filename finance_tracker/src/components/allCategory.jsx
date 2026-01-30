@@ -2,7 +2,7 @@ function Handle_Delete(id, setExpenseArr) {
   setExpenseArr(prev => prev.filter(value => value.id != id));
 }
 
-function Display_All({Title, Amount, onDelete,Category,Month,day}) {
+function Display_All({Title, Amount, onDelete,Category,Month,day,currencySymbol}) {
     return(
       <div className="Expense-Card"> 
       <div className="Delete-Expense-Btn-Container">
@@ -15,7 +15,7 @@ function Display_All({Title, Amount, onDelete,Category,Month,day}) {
     </div>
 
     <div className="card-amount">
-      <h2>${Amount}</h2>
+      <h2>{currencySymbol}{Amount}</h2>
     </div>
     <div className="card-category">
         <h2>Category: {Category}</h2>
@@ -29,13 +29,13 @@ function Display_All({Title, Amount, onDelete,Category,Month,day}) {
     )
 }
 
-export default function AllExpenses({expenseArr, setExpenseArr}) {
+export default function AllExpenses({expenseArr, setExpenseArr,currencySymbol}) {
     return(
      <div className="Expense-Card-Container">
         {expenseArr.map(value => (
              <Display_All Title={value.Expense_Title} Amount={value.Expense_Amount}
              onDelete={()=>Handle_Delete(value.id, setExpenseArr)} key={value.id} Category={value.Expense_Category}
-             Month={value.Month} day={value.day}/>
+             Month={value.Month} day={value.day} currencySymbol={currencySymbol}/>
         ))}
      </div>
     );
