@@ -18,6 +18,8 @@ import EducationExpenses from './components/Education.jsx';
 import Income from './components/income.jsx';
 import Expense_History from './components/ExpenseHistory.jsx';
 import Income_History from './components/IncomeHistory.jsx';
+import useExpenseDataByPeriod from './hooks/ExpenseDataByPeriod.jsx';
+import useIncomeDateFilter from './hooks/IncomeDateFilter.jsx';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -102,39 +104,24 @@ function App() {
         const saved = localStorage.getItem('Expense_Category'); 
         return saved ? JSON.parse(saved) : ('');
     });
-    //This is for storing the Current Months Expenses which are relevant for rendering and calculating
-    const [thisMonthExpense, setThisMonthExpense] = useState(() => {
-    const saved = localStorage.getItem('Monthly_Expense_Array');
-    return saved ? JSON.parse(saved) : [];
-  }); 
-   const [previousMonthExpenses, setPreviousMonthExpenses] = useState(()=> {
-      const saved = localStorage.getItem('PreviousMonth_Expense_Array');
-      return saved ? JSON.parse(saved) : [];
-   })
+
    const [incomeSources, setIncomeSources] = useState('');
    const [incomeAmount, setIncomeAmount] = useState('');
 
    const [incomeArr, setIncomeArr] = useState(()=> {
     const saved = localStorage.getItem('Income_Data');
     return saved ? JSON.parse(saved) : [];
-   }) 
-
-   const [thisMonthIncome, setThisMonthIncome] = useState(()=> {
-    const saved = localStorage.getItem('Monthly_Income_Array');
-    return saved ? JSON.parse(saved) : [''];
-   })
-
-   const [previousMonthIncome, setPreviousMonthIncome] = useState(()=> {
-    const saved = localStorage.getItem('Previous_Month_Income_Array');
-    return saved ? JSON.parse(saved) : [''];
-   })
+   })      
 
   const [currency, setCurrency] = useState(()=> {
      const saved = localStorage.getItem("Selected_Currency");
-     return saved ? JSON.parse(saved) : ("");
+     return saved ? JSON.parse(saved) : ("₹");
    })
   // Responsible for tracking the desired Month's expense or income data selected by the user
   const [selectedMonth, setSelectedMonth] = useState(MONTH_MAP[new Date().getMonth()])
+
+   const {thisMonthExpense, previousMonthExpenses} = useExpenseDataByPeriod(expenseArr);
+   const {thisMonthIncome, previousMonthIncome} = useIncomeDateFilter(incomeArr);
 
   // Responsible for returning the total expense rate of each category
   function getCategoryTotal(expenses, category) {
@@ -160,47 +147,12 @@ function App() {
               </div>
   )
 }
-// Calculating the total Income of this Month
-     let ThisMonth_IncomeTotal = thisMonthIncome.reduce((x,y)=> {
-         return x + Number(y.Income_Amount);
-     }, 0);
-     // Calculating the total Income of previous month
-    let previousMonth_IncomeTotal = previousMonthIncome.reduce((a,b)=> {
-         return a + Number(b?.Income_Amount || 0);
-    }, 0);
      const Housing_Expenses = thisMonthExpense.filter(value => value.Expense_Category === "#Housing");
      const Education_Expenses = thisMonthExpense.filter(value => value.Expense_Category === "#Education");
      const Food_Groceries = thisMonthExpense.filter(value => value.Expense_Category === "#Food & Groceries");
       const Transportation_Expenses = thisMonthExpense.filter(value => value.Expense_Category === "#Transportation");
       const Other_Expenses = thisMonthExpense.filter(value => value.Expense_Category === "#Other");
       const Personal_Expenses = thisMonthExpense.filter(value => value.Expense_Category === "#Personal")
-
-      // Filter and sort this month's and previous month's expenses whenever expenseArr changes
-        useEffect(() => {
-          const now = new Date();
-          const currentMonth = now.getMonth();
-          const currentYear = now.getFullYear();
-      
-          const thisMonth_ExpenseData= expenseArr.filter(item => {
-            const expenseDate = new Date(item.createdAt);
-            return (
-              expenseDate.getMonth() === currentMonth && expenseDate.getFullYear() === currentYear
-            );
-          });
-           const PreviousMonth_ExpenseData = expenseArr.filter(item => {
-              const expenseDate = new Date(item.createdAt);
-              return(
-              expenseDate.getMonth() === currentMonth - 1 && expenseDate.getFullYear() === currentYear
-           )
-           })
-          let thisMonthExpense_sorted = thisMonth_ExpenseData.sort((a,b)=>b.Expense_Amount-a.Expense_Amount);
-                                        
-      
-          const previousMonthExpenses_sorted = PreviousMonth_ExpenseData.sort((a,b)=>b.Expense_Amount-a.Expense_Amount);
-      
-          setThisMonthExpense(thisMonthExpense_sorted);
-          setPreviousMonthExpenses(previousMonthExpenses_sorted);
-        }, [expenseArr]);
       
         // Save current month's expenses data to localStorage
         useEffect(() => {
@@ -210,14 +162,6 @@ function App() {
         useEffect(()=> {
             localStorage.setItem('PreviousMonth_Expense_Array', JSON.stringify(previousMonthExpenses));
         }, [previousMonthExpenses])
-        // Save current month's income data to localStorage
-         useEffect(() => {
-          localStorage.setItem('Monthly_Income_Array', JSON.stringify(thisMonthIncome));
-     }, [thisMonthIncome]); 
-        // Save previous month's income data to localStorage 
-        useEffect(()=> {
-        localStorage.setItem('Previous_Month_Income_Array', JSON.stringify(previousMonthIncome));
-        }, [previousMonthIncome])
 
         useEffect(()=> {
           localStorage.setItem('Selected_Currency', JSON.stringify(currency));
@@ -230,12 +174,12 @@ function App() {
 
   
    const supportedCurrencies = [
-  { code: "NPR", symbol: "₹" },
-  { code: "INR", symbol: "₹" },
-  { code: "USD", symbol: "$" },
-  { code: "EUR", symbol: "€" },
-  { code: "GBP", symbol: "£" },
-  { code: "JPY", symbol: "¥" }
+  { code: "NPR", symbol: "₹", id: 1 },
+  { code: "INR", symbol: "₹", id: 2 },
+  { code: "USD", symbol: "$", id: 3 },
+  { code: "EUR", symbol: "€", id: 4 },
+  { code: "GBP", symbol: "£", id: 5 },
+  { code: "JPY", symbol: "¥", id: 6 }
    ]
     //currencySymbol variable is derived from an existing state to store the symbol of given currency
   const currencySymbol = supportedCurrencies.find(c => c.code === currency)?.symbol || "";
@@ -424,13 +368,13 @@ let categories_ranking_chartData = {
     element: <AppLayout />, 
     children: [
       {path: "home", element: <Home Category_Expenses={Category_Expenses}
-      thisMonthExpense={thisMonthExpense} previousMonthExpenses={previousMonthExpenses} 
+     expenseArr={expenseArr}
       PreviousMonth_CategoryExpenses={PreviousMonth_CategoryExpenses} supportedCurrencies={supportedCurrencies}
      currency={currency} setCurrency={setCurrency} chartOptions={chartOptions} 
-      ThisMonth_IncomeSourcesTotal={ThisMonth_IncomeSourcesTotal} ThisMonth_IncomeTotal={ThisMonth_IncomeTotal}
+      ThisMonth_IncomeSourcesTotal={ThisMonth_IncomeSourcesTotal} 
       categories_ranking_chartData={categories_ranking_chartData} Income_Sources_Ranking_ChartData={Income_Sources_Ranking_ChartData}
-      previousMonth_IncomeSourcesTotal={previousMonth_IncomeSourcesTotal} previousMonth_IncomeTotal={previousMonth_IncomeTotal}
-      thisMonthIncome={thisMonthIncome} previousMonthIncome={previousMonthIncome} currencySymbol={currencySymbol}/>},
+      previousMonth_IncomeSourcesTotal={previousMonth_IncomeSourcesTotal} 
+      currencySymbol={currencySymbol} incomeArr={incomeArr} MONTH_MAP={MONTH_MAP}/>},
 
       {path: "expenses", element: <Expense expense={expense} setExpense={setExpense} setExpenseCategory={setExpenseCategory}
        Expense_Categories={Expense_Categories} expenseCategory={expenseCategory} expenseAmount={expenseAmount} setExpenseAmount={setExpenseAmount}
@@ -453,10 +397,9 @@ let categories_ranking_chartData = {
        ]
       },
       {path: "income", element: <Income setIncomeSources={setIncomeSources} setIncomeAmount={setIncomeAmount}
-      addIncomeInfo={addIncomeInfo} incomeArr={incomeArr} setThisMonthIncome={setThisMonthIncome}
-      thisMonthIncome={thisMonthIncome} ThisMonth_IncomeSourcesTotal={ThisMonth_IncomeSourcesTotal}
-      currencySymbol={currencySymbol} ThisMonth_IncomeTotal={ThisMonth_IncomeTotal} 
-      setPreviousMonthIncome={setPreviousMonthIncome}/>},
+      addIncomeInfo={addIncomeInfo} incomeArr={incomeArr} ThisMonth_IncomeSourcesTotal={ThisMonth_IncomeSourcesTotal}
+      currencySymbol={currencySymbol} 
+      />},
     ]
   },
   {

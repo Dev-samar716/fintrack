@@ -1,41 +1,16 @@
 import { useEffect } from 'react';
 import '../css/Income.css';
+import useIncomeDateFilter  from '../hooks/IncomeDateFilter';
 
 export default function Income({
   setIncomeSources,
   setIncomeAmount,
   addIncomeInfo,
   incomeArr,
-  setThisMonthIncome,
-  thisMonthIncome,
   ThisMonth_IncomeSourcesTotal,
-  currencySymbol, ThisMonth_IncomeTotal,
-  setPreviousMonthIncome
+  currencySymbol
 }) {
-     let now = new Date();
-    let currentMonth = now.getMonth();
-    let currentYear = now.getFullYear();
-   
-   useEffect(()=> {
-      let ThisMonthIncome = incomeArr.filter(value => {
-     let IncomeMonth = new Date(value.createdAt).getMonth();  
-     let IncomeYear = new Date(value.createdAt).getFullYear();
-     return(
-      currentMonth === IncomeMonth && currentYear === IncomeYear
-     )
-  }) 
-  let PreviousMonthIncome = incomeArr.filter(value => {
-     let IncomeMonth = new Date(value.createdAt).getMonth(); 
-     let IncomeYear = new Date(value.createdAt).getFullYear();
-     return(
-      currentMonth - 1 === IncomeMonth && currentYear === IncomeYear
-     )
-  })
-  let sorted = ThisMonthIncome.sort((a,b) => b.Income_Amount - a.Income_Amount);
-  setThisMonthIncome(sorted);
-  setPreviousMonthIncome(PreviousMonthIncome);
-   }, [incomeArr])
-
+   const {thisMonthIncome,ThisMonth_IncomeTotal} = useIncomeDateFilter(incomeArr);
   return (
     <div className="Income-Page-Container">
       

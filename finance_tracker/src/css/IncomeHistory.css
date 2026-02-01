@@ -18,6 +18,7 @@
     display: flex;
     gap: 2rem;
     flex-wrap: wrap;
+    width: 100%;
 }
 .Income-Card-Container h1 {
     color: #ededed;

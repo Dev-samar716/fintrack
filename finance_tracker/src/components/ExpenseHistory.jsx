@@ -1,12 +1,13 @@
 import "../css/ExpenseHistory.css";
 import "../css/Expense.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function Update_SelectedMonthCategory(e,setSelectedExpenseMonthData,selected_ExpenseMonthData) {
       let selected_category = e.target.value; 
       setSelectedExpenseMonthData(
         selected_ExpenseMonthData.filter(value => value.Expense_Category.toLowerCase() === selected_category)
       )
+      console.log(selected_category);
 }
 
 // The below function returns a card based on the Expense Data
@@ -43,6 +44,9 @@ export default function Expense_History({
 }) {
  let selected_ExpenseMonthData = expenseArr.filter(value => value.Month === selectedMonth);
   const [selectedExpenseMonthData, setSelectedExpenseMonthData] = useState(selected_ExpenseMonthData)
+ useEffect(()=> {
+     setSelectedExpenseMonthData(selected_ExpenseMonthData);
+ }, [selected_ExpenseMonthData])
     const selectedMonthTotal = selectedExpenseMonthData.reduce((x,y)=> {
       return x + Number(y.Expense_Amount);
 },0)
@@ -80,7 +84,8 @@ export default function Expense_History({
                  : selectedExpenseMonthData.map(value => {
                     return <Display_SelectedMonthExpenseData Title={value.Expense_Title}
                    Amount={value.Expense_Amount} currencySymbol={currencySymbol}
-                   Month={value.Month} day={value.day} Category={value.Expense_Category} key={value.id}/>
+                   Month={value.Month} day={value.day} Category={value.Expense_Category} 
+                   selectedMonth={selectedMonth} key={value.id}/>
                  })}
                 </div>
             </div>
