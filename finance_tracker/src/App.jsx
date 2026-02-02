@@ -6,7 +6,7 @@ import Welcome from './components/Welcome.jsx'
 import NavHeader from './components/WelcomePageNav.jsx' 
 import './css/Welcome.css'; 
 import Navigation_Bar from './components/NavBar.jsx'
-import Expense from './components/Expense.jsx'
+import Expense from './components/Expense.jsx';
 import Home from './components/Home.jsx';
 import HousingExpenses from './components/Housing.jsx'
 import AllExpenses from './components/allCategory.jsx'
