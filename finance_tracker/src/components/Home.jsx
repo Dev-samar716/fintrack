@@ -2,6 +2,9 @@ import "../css/HomePage.css";
 import {Bar} from "react-chartjs-2";
 import useExpenseDataByPeriod from '../hooks/ExpenseDataByPeriod.jsx';
 import useIncomeDateFilter from "../hooks/IncomeDateFilter.jsx";
+import useExpenseChartData from "../hooks/ExpenseChartData.jsx"
+import useIncomeChartData from "../hooks/IncomeChartData.jsx";
+import { useMemo } from "react";
 
 export default function Home({
   Category_Expenses,
@@ -9,67 +12,27 @@ export default function Home({
   PreviousMonth_CategoryExpenses,
   supportedCurrencies,
   currency, setCurrency,chartOptions,ThisMonth_IncomeSourcesTotal, 
-  categories_ranking_chartData,Income_Sources_Ranking_ChartData, previousMonth_IncomeSourcesTotal,
+  previousMonth_IncomeSourcesTotal,
  currencySymbol,incomeArr, MONTH_MAP
 }) {
-  let Expenses_Chart_Data = {};
-  let Total_Income_Comparision_Chart_Data = {};
   const {thisMonthExpense, previousMonthExpenses, PreviousMonthExpensesTotal, thisMonthExpensesTotal} = useExpenseDataByPeriod(expenseArr);
+
   const {thisMonthIncome, previousMonthIncome, ThisMonth_IncomeTotal, previousMonth_IncomeTotal} = useIncomeDateFilter(incomeArr);
 
+  const {Expenses_Chart_Data , categories_ranking_chartData} = useExpenseChartData(thisMonthExpense, previousMonthExpenses, PreviousMonthExpensesTotal
+    , thisMonthExpensesTotal, Category_Expenses);
+
+    const {Total_Income_Comparision_Chart_Data, Income_Sources_Ranking_ChartData} = useIncomeChartData(thisMonthIncome, previousMonthIncome, 
+      ThisMonth_IncomeTotal, previousMonth_IncomeTotal,ThisMonth_IncomeSourcesTotal)
+
   // Calculates the percentage change from the previous month to the current month in percentage
-  let Percentage_Charge =
-  PreviousMonthExpensesTotal
+  let Percentage_Charge = useMemo(() => {
+    return PreviousMonthExpensesTotal
     ? ((thisMonthExpensesTotal - PreviousMonthExpensesTotal) /
        PreviousMonthExpensesTotal * 100).toFixed(2)
     : 0;
+  }, [thisMonthExpensesTotal, PreviousMonthExpensesTotal])
 
-
-  const setExpenseBarColor = (PreviousMonthDataTotal, thisMonthDataTotal) => {
-     if(PreviousMonthDataTotal > thisMonthDataTotal) {
-        return "lime";
-     } else {
-      return "red";
-     }
-  }
-  const setIncomeBarColor = (PreviousMonthDataTotal, thisMonthDataTotal) => {
-     if(thisMonthDataTotal > PreviousMonthDataTotal ) {
-        return "lime";
-     } else {
-      return "red";
-     }
-  }
-  if(thisMonthExpense.length > 0 && previousMonthExpenses.length > 0) {
-    Expenses_Chart_Data = {
-       labels: [previousMonthExpenses[0].Month, thisMonthExpense[0].Month],
-       datasets: [
-         {
-         label: "Expense",
-         data: [PreviousMonthExpensesTotal,thisMonthExpensesTotal],
-         backgroundColor : [
-        setExpenseBarColor(PreviousMonthExpensesTotal, thisMonthExpensesTotal),
-        setExpenseBarColor(PreviousMonthExpensesTotal, thisMonthExpensesTotal)
-       ]
-           }
-       ],
-    }
-  } 
-  // Below is the chart data for comparision between previous Month and current Month Total Income
-  if(thisMonthIncome.length > 0 && previousMonthIncome.length > 0) {
-      Total_Income_Comparision_Chart_Data = {
-      labels: [previousMonthIncome[0].Month,thisMonthIncome[0].Month], 
-      datasets: [ 
-        {
-        label: ["Total Income Comparision"],
-       data: [previousMonth_IncomeTotal,ThisMonth_IncomeTotal], 
-       backgroundColor: [
-        setIncomeBarColor(previousMonth_IncomeTotal, ThisMonth_IncomeTotal),
-        setIncomeBarColor(previousMonth_IncomeTotal, ThisMonth_IncomeTotal),
-      ]
-        }
-      ],
-   }
-  }
   return (
   <div className='Whole'>
     <div className="Currency-Select-Container">
@@ -118,7 +81,7 @@ export default function Home({
            <h2>Expense Categories Ranking</h2>
           <div className="Chart-Container-Wide" 
       style={{ width: "80%", maxWidth: "800px"}}>
-       {categories_ranking_chartData?.datasets?.length > 0 ? 
+       {thisMonthExpensesTotal > 0 ? 
         <Bar data={categories_ranking_chartData} options={chartOptions}/>
        : <h2>There is no sufficient data to display this chart!</h2>}
       </div>
@@ -152,7 +115,7 @@ export default function Home({
           <div className="Chart-Container-Wide" 
       style={{ width: "80%", maxWidth: "800px"}}>
        {Total_Income_Comparision_Chart_Data?.datasets?.length > 0 && 
-       Total_Income_Comparision_Chart_Data.length > 0 || Total_Income_Comparision_Chart_Data ? 
+        Total_Income_Comparision_Chart_Data ? 
         <Bar data={Total_Income_Comparision_Chart_Data} options={chartOptions}/>
        : <h2>There is no sufficient data to display this chart!</h2>}
       </div>
@@ -161,8 +124,7 @@ export default function Home({
            <h2>Income Sources Ranking</h2>
           <div className="Chart-Container-Wide" 
       style={{ width: "80%", maxWidth: "800px"}}>
-       {Income_Sources_Ranking_ChartData?.datasets?.length > 0 
-        && Income_Sources_Ranking_ChartData || Income_Sources_Ranking_ChartData.length > 0 ? 
+       {ThisMonth_IncomeTotal > 0? 
        <Bar data={Income_Sources_Ranking_ChartData} options={chartOptions} />
        : <h2>There is no sufficient data to display this chart!</h2>}
       </div>

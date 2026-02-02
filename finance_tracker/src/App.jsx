@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react' 
+import { useEffect, useState, useMemo } from 'react' 
 import { createHashRouter, RouterProvider, Outlet } from 'react-router-dom';
 import {Link} from 'react-router-dom';
 import './css/App.css';
@@ -200,14 +200,14 @@ const months = [
 ];
 /**Below object is AI-generated code to optimize the chart for mobile, as chart.jsx layout is very non-responsive 
 for smaller screens, and challenging to optimize perfectly for mobile screens.**/
-const chartOptions = {
+const chartOptions = useMemo(() => ({
   responsive: true,
   maintainAspectRatio: false, // 🚨 THIS FIXES MOBILE
   indexAxis: "x", // FORCE vertical bars
   plugins: {
     legend: {
       labels: {
-        color: "white",
+        color: "white", // This makes label colors white
       },
     },
   },
@@ -219,7 +219,8 @@ const chartOptions = {
       ticks: { color: "white" },
     },
   },
-};
+
+}), [])
 
    // Finding total category expensess
   let Category_Expenses = { // Finding totals of each category expenses of the current month
@@ -256,51 +257,6 @@ const chartOptions = {
       Investment: getIncomeSourceTotal(previousMonthIncome, "investment"),
       Other: getIncomeSourceTotal(previousMonthIncome, "other")
   }
-  //Below is the chart data for ranking of income sources of current month based on their total 
-  let Income_Sources_Ranking_ChartData = {
-    labels: ["Job", "Freelance", "Business", "Investment", "Other"], 
-    datasets: [
-      {
-        label: ["Income Source Ranking"],
-        data: [ThisMonth_IncomeSourcesTotal.Job, ThisMonth_IncomeSourcesTotal.Freelance,
-        ThisMonth_IncomeSourcesTotal.Business, ThisMonth_IncomeSourcesTotal.Investment, 
-        ThisMonth_IncomeSourcesTotal.Other
-        ],
-        backgroundColor: [
-              "yellow", 
-              "blue",
-              "lime",
-              "red",
-              "pink",
-              "purple",
-              "white"
-            ]
-      }
-    ]
-  }
-  // Below is the chart data for ranking of expense categories based on their current Month Total
-let categories_ranking_chartData = {
-        labels: ["Housing", "Transportation", "Education", "Personal", "Food&Groceries", "Other"],
-        datasets : [
-           {
-            label: ["Category Ranking"],
-            data: [
-              Category_Expenses.Housing, Category_Expenses.Transportation, 
-              Category_Expenses.Education, Category_Expenses.Personal, 
-              Category_Expenses.FoodsGroceries, Category_Expenses.Other
-            ],
-            backgroundColor: [
-              "yellow", 
-              "blue",
-              "lime",
-              "red",
-              "pink",
-              "purple",
-              "white"
-            ]
-           }
-        ]
-    }
   
     useEffect(()=>{
        localStorage.setItem('Expense', JSON.stringify(expense))
@@ -367,12 +323,10 @@ let categories_ranking_chartData = {
   {
     element: <AppLayout />, 
     children: [
-      {path: "home", element: <Home Category_Expenses={Category_Expenses}
-     expenseArr={expenseArr}
+      {path: "home", element: <Home Category_Expenses={Category_Expenses} expenseArr={expenseArr}
       PreviousMonth_CategoryExpenses={PreviousMonth_CategoryExpenses} supportedCurrencies={supportedCurrencies}
      currency={currency} setCurrency={setCurrency} chartOptions={chartOptions} 
       ThisMonth_IncomeSourcesTotal={ThisMonth_IncomeSourcesTotal} 
-      categories_ranking_chartData={categories_ranking_chartData} Income_Sources_Ranking_ChartData={Income_Sources_Ranking_ChartData}
       previousMonth_IncomeSourcesTotal={previousMonth_IncomeSourcesTotal} 
       currencySymbol={currencySymbol} incomeArr={incomeArr} MONTH_MAP={MONTH_MAP}/>},
 
