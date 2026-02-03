@@ -38,11 +38,11 @@ export default function Income({
               onChange={(e)=> setIncomeSources(e.target.value)}
             >
               <option value="">Select source</option>
-              <option value="job">Job</option>
-              <option value="freelance">Freelance</option>
-              <option value="scholarship">Business</option>
-              <option value="investment">Investment</option>
-              <option value="other">Other</option>
+              <option value="Job">Job</option>
+              <option value="Freelance">Freelance</option>
+              <option value="Business">Business</option>
+              <option value="Investment">Investment</option>
+              <option value="Other">Other</option>
             </select>
           </div>
 

@@ -1,14 +1,6 @@
 import "../css/ExpenseHistory.css";
 import "../css/Expense.css";
-import { useEffect, useState } from "react";
-
-function Update_SelectedMonthCategory(e,setSelectedExpenseMonthData,selected_ExpenseMonthData) {
-      let selected_category = e.target.value; 
-      setSelectedExpenseMonthData(
-        selected_ExpenseMonthData.filter(value => value.Expense_Category.toLowerCase() === selected_category)
-      )
-      console.log(selected_category);
-}
+import { useMemo, useState } from "react";
 
 // The below function returns a card based on the Expense Data
 function Display_SelectedMonthExpenseData({Title,Amount,currencySymbol, Month, day, Category}) {
@@ -42,21 +34,29 @@ export default function Expense_History({
     currencySymbol,
     months, Expense_Categories
 }) {
- let selected_ExpenseMonthData = expenseArr.filter(value => value.Month === selectedMonth);
-  const [selectedExpenseMonthData, setSelectedExpenseMonthData] = useState(selected_ExpenseMonthData)
- useEffect(()=> {
-     setSelectedExpenseMonthData(selected_ExpenseMonthData);
- }, [selected_ExpenseMonthData])
-    const selectedMonthTotal = selectedExpenseMonthData.reduce((x,y)=> {
+   const [selectedCategory, setSelectedCategory] = useState('All')
+ let selectedExpenseMonthData = useMemo(() => {
+   if(selectedCategory === 'All') {
+    return expenseArr.filter(value => value.Month === selectedMonth);
+   } else {
+    return expenseArr.filter(value => value.Month === selectedMonth && 
+       value.Expense_Category.toLowerCase() === selectedCategory.toLocaleLowerCase());
+   }
+ }, [expenseArr, selectedMonth, selectedCategory])
+
+    const selectedMonthTotal = useMemo(() => {
+      return selectedExpenseMonthData.reduce((x,y)=> {
       return x + Number(y.Expense_Amount);
 },0)
+    })
      return( 
         <div className="Whole-Parent">
           <div className="Select-Container-Section">
           <div className="Select-Container">
                     <label>Month:</label> 
         <select className="Input-Select"
-         onChange={(e)=>setSelectedMonth(e.target.value)}>
+         onChange={(e)=>setSelectedMonth(e.target.value)}
+         value={selectedMonth}>
           {months.map(value => {
             return <option value={value}>{value}</option>
           })}
@@ -65,7 +65,8 @@ export default function Expense_History({
 
                 <div className="Select-Container">
                     <label>Category:</label> 
-  <select className="Input-Select" onChange={(e)=> Update_SelectedMonthCategory(e,setSelectedExpenseMonthData,selected_ExpenseMonthData)}> 
+       <select className="Input-Select" onChange={(e) => setSelectedCategory(e.target.value)}> 
+        <option value={'All'}>All</option>
           {Expense_Categories.map(value => {
             return <option value={value}>{value}</option>
           })}
