@@ -1,6 +1,6 @@
-#FinTrack
+## FinTrack
 
-FinTrack is a personal finance tracking web application built with React + Vite. The goal of the project is to help users track income and expenses, visualize spending patterns, and gain insights into their financial habits over time.
+> FinTrack is a personal finance tracking web application built with React + Vite. The goal of the project is to help users track income and expenses, visualize spending patterns, and gain insights into their financial habits over time.
 
 > 🚧 Project Status: This application is still under development. Some features are incomplete, may change, or are not yet fully wired to persistent storage or authentication.
 
