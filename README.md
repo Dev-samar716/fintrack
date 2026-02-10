@@ -1,4 +1,4 @@
-FinTrack
+#FinTrack
 
 FinTrack is a personal finance tracking web application built with React + Vite. The goal of the project is to help users track income and expenses, visualize spending patterns, and gain insights into their financial habits over time.
 
@@ -9,53 +9,53 @@ FinTrack is a personal finance tracking web application built with React + Vite.
 
 ---
 
-✨ Features (Current & Planned)
+## ✨ Features (Current & Planned)
 
 ✅ Implemented / In Progress
 
-Add and view income entries
+- Add and view income entries
 
-Add and view expense entries
+- Add and view expense entries
 
-Categorized expenses (food, housing, transportation, personal, etc.)
+- Categorized expenses (food, housing, transportation, personal, etc.)
 
-Expense and income history views
+- Expense and income history views
 
-Dashboard for financial status and monthly 
+- Dashboard for financial status and monthly 
 comparison 
 
-Monthly and date-based filtering
+- Monthly and date-based filtering
 
-Modular React component structure
+- Modular React component structure
 
-Search bar to search for expenses in 
+- Search bar to search for expenses in 
 expense-history page. 
 
 
-🛠️ Planned / Not Yet Complete
+## 🛠️ Planned / Not Yet Complete
 
-User authentication & persistent accounts
+- User authentication & persistent accounts
 
-Backend integration (database & API)
+- Backend integration (database & API)
 
-Advanced analytics & savings recommendations
+- Advanced analytics & savings recommendations
 
-Improved UI/UX and accessibility
+- Improved UI/UX and accessibility
 
-Mobile responsiveness refinements
+- Mobile responsiveness refinements
 
 
 
-🧱 Tech Stack
+## 🧱 Tech Stack
 
-Frontend: React (JSX)
+- Frontend: React (JSX)
 
-Build Tool: Vite
+- Build Tool: Vite
 
-Styling: CSS (component-level styles)
+- Styling: CSS (component-level styles)
 
-State & Logic: React hooks and custom utility functions
+- State & Logic: React hooks and custom utility functions
 
-Charts: Custom charts via chart.js library 
+- Charts: Custom charts via chart.js library 
 
   
