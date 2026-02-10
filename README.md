@@ -58,4 +58,14 @@ expense-history page.
 
 - Charts: Custom charts via chart.js library 
 
+## 🧪 Development Notes
+
+- This project is currently **frontend-only** and runs entirely on the client side.
+- No backend or database is connected at this stage.
+- Application data may reset on page refresh due to the lack of persistent storage.
+- Several components and custom hooks are still **experimental** and may be refactored.
+- File and folder structure may change as new features are introduced.
+- Styling and UI/UX are functional but not final.
+- Error handling and edge cases are still being improved.
+- The project is under active development and should be considered a **work in progress**.
   
