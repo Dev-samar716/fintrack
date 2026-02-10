@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo } from 'react' 
-import { createHashRouter, RouterProvider, Outlet } from 'react-router-dom';
+import { createHashRouter, RouterProvider, Outlet, useOutletContext} from 'react-router-dom';
 import {Link} from 'react-router-dom';
 import './css/App.css';
 import Welcome from './components/Welcome.jsx' 
@@ -20,6 +20,10 @@ import Expense_History from './components/ExpenseHistory.jsx';
 import Income_History from './components/IncomeHistory.jsx';
 import useExpenseDataByPeriod from './hooks/ExpenseDataByPeriod.jsx';
 import useIncomeDateFilter from './hooks/IncomeDateFilter.jsx';
+import useChartOptions from './hooks/ChartOptions.jsx';
+import useTotalExpenseCategories from './hooks/TotalExpensesCategories.jsx';
+import useTotal_IncomeSources from './hooks/TotalIncomeSources.jsx';
+import useExpenseCategoriesFilter from './hooks/ExpenseCategoriesFilter.jsx';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -39,13 +43,21 @@ ChartJS.register(
 
 function HistoryLayout({Vertical_Side_NavBar}) {
    const NavLinks_Array = ["Expense-History", "Income-History", "Savings-History"];
+   const [inputValue, setInputValue] = useState('');
+   const [query, setQuery] = useState('');
+   const [clicked, setClicked] = useState('');
   return( 
     <>
-   <Navigation_Bar /> 
+   <Navigation_Bar 
+   value={inputValue}
+   onChange={setInputValue}
+   onSearch={() => setQuery(inputValue)}
+   setClicked={setClicked}
+   /> 
    <div className='NavBar-Outlet-Flex-Wrapper'> {/**Styling available in app.css */}
     <Vertical_Side_NavBar NavLinks_Array={NavLinks_Array}/>
     <div className='History-Outlet-Container'> {/**Styling for this available in app.css */}
-     <Outlet />
+     <Outlet context={{query, clicked, setClicked}}/>
     </div>
    </div>
    </>
@@ -70,7 +82,8 @@ function Nav_Header() {
 }
 
 function App() {  
-   const MONTH_MAP = { //This is for mapping timestamp Month correctly in human friendly format.
+   const MONTH_MAP = useMemo(() => ({
+    //This is for mapping timestamp Month correctly in human friendly format.
   0: "January",
   1: "February",
   2: "March",
@@ -83,7 +96,7 @@ function App() {
   9: "October",
   10: "November",
   11: "December"
-}; 
+   }), []);
 
     const [expense, setExpense] = useState(()=> { 
          const saved = localStorage.getItem('Expense');
@@ -121,20 +134,21 @@ function App() {
   const [selectedMonth, setSelectedMonth] = useState(MONTH_MAP[new Date().getMonth()])
 
    const {thisMonthExpense, previousMonthExpenses} = useExpenseDataByPeriod(expenseArr);
+
    const {thisMonthIncome, previousMonthIncome} = useIncomeDateFilter(incomeArr);
 
-  // Responsible for returning the total expense rate of each category
-  function getCategoryTotal(expenses, category) {
-  return expenses
-    .filter(item => item.Expense_Category === category)
-    .reduce((sum, item) => sum + Number(item.Expense_Amount), 0);
-} 
-//Responsible for returning total of each income source 
-   function getIncomeSourceTotal(Income, source) {
-    return Income 
-     .filter(item =>item.Income_Source === source)
-     .reduce((sum,item) => sum + Number(item.Income_Amount),  0)
-   }
+   const chartOptions = useChartOptions();
+
+   const {Category_Expenses, PreviousMonth_CategoryExpenses} = useTotalExpenseCategories(
+    thisMonthExpense, previousMonthExpenses
+   );
+   const {ThisMonth_IncomeSourcesTotal, previousMonth_IncomeSourcesTotal} = useTotal_IncomeSources(
+    thisMonthIncome, previousMonthIncome
+   )
+
+   const {Housing_Expenses, Education_Expenses, Food_Groceries, Transportation_Expenses, Other_Expenses,
+        Personal_Expenses} = useExpenseCategoriesFilter(thisMonthExpense);
+
    // Responsible for returning an adaptable vertical nav-bar, reusable across various components.
  function Vertical_Side_NavBar({NavLinks_Array = [] }) {
   return(
@@ -147,12 +161,6 @@ function App() {
               </div>
   )
 }
-     const Housing_Expenses = thisMonthExpense.filter(value => value.Expense_Category === "#Housing");
-     const Education_Expenses = thisMonthExpense.filter(value => value.Expense_Category === "#Education");
-     const Food_Groceries = thisMonthExpense.filter(value => value.Expense_Category === "#Food & Groceries");
-      const Transportation_Expenses = thisMonthExpense.filter(value => value.Expense_Category === "#Transportation");
-      const Other_Expenses = thisMonthExpense.filter(value => value.Expense_Category === "#Other");
-      const Personal_Expenses = thisMonthExpense.filter(value => value.Expense_Category === "#Personal")
       
         // Save current month's expenses data to localStorage
         useEffect(() => {
@@ -173,14 +181,18 @@ function App() {
     ];
 
   
-   const supportedCurrencies = [
+   const supportedCurrencies = useMemo(() => {
+     let data = [
   { code: "NPR", symbol: "₹", id: 1 },
   { code: "INR", symbol: "₹", id: 2 },
   { code: "USD", symbol: "$", id: 3 },
   { code: "EUR", symbol: "€", id: 4 },
   { code: "GBP", symbol: "£", id: 5 },
   { code: "JPY", symbol: "¥", id: 6 }
-   ]
+     ]
+     return data;
+   }, [])
+
     //currencySymbol variable is derived from an existing state to store the symbol of given currency
   const currencySymbol = supportedCurrencies.find(c => c.code === currency)?.symbol || "";
    
@@ -198,65 +210,7 @@ const months = [
   "November",
   "December"
 ];
-/**Below object is AI-generated code to optimize the chart for mobile, as chart.jsx layout is very non-responsive 
-for smaller screens, and challenging to optimize perfectly for mobile screens.**/
-const chartOptions = useMemo(() => ({
-  responsive: true,
-  maintainAspectRatio: false, // 🚨 THIS FIXES MOBILE
-  indexAxis: "x", // FORCE vertical bars
-  plugins: {
-    legend: {
-      labels: {
-        color: "white", // This makes label colors white
-      },
-    },
-  },
-  scales: {
-    x: {
-      ticks: { color: "white" },
-    },
-    y: {
-      ticks: { color: "white" },
-    },
-  },
-
-}), [])
-
-   // Finding total category expensess
-  let Category_Expenses = { // Finding totals of each category expenses of the current month
-     Housing : getCategoryTotal(thisMonthExpense, "#Housing"),
-     Transportation: getCategoryTotal(thisMonthExpense, "#Transportation"),
-     Education: getCategoryTotal(thisMonthExpense, "#Education"), 
-     Personal: getCategoryTotal(thisMonthExpense, "#Personal"),
-     FoodsGroceries: getCategoryTotal(thisMonthExpense, "#Foods & Groceries"),
-      Other: getCategoryTotal(thisMonthExpense, "#Other")
-  }
-  let PreviousMonth_CategoryExpenses = { //Finding totals of each category expenses of the previous month
-     Housing : getCategoryTotal(previousMonthExpenses, "#Housing"),
-     Transportation: getCategoryTotal(previousMonthExpenses, "#Transportation"),
-     Education : getCategoryTotal(previousMonthExpenses, "#Education"), 
-     Personal: getCategoryTotal(previousMonthExpenses, "#Personal"),
-     FoodsGroceries: getCategoryTotal(previousMonthExpenses, "#Foods & Groceries"),
-     Other: getCategoryTotal(previousMonthExpenses, "#Other")
-  }
-      
-  //Finding total of each Income source 
-  let ThisMonth_IncomeSourcesTotal = { //Finding totals of each income source of this month
-      Job: getIncomeSourceTotal(thisMonthIncome, "job"),
-      Freelance: getIncomeSourceTotal(thisMonthIncome, "freelance"),
-      Business: getIncomeSourceTotal(thisMonthIncome, "business"), 
-      Investment: getIncomeSourceTotal(thisMonthIncome, "investment"),
-      Other: getIncomeSourceTotal(thisMonthIncome, "other")
-  }
-
-  //Finding total of each Income source 
-  let previousMonth_IncomeSourcesTotal = { //Finding totals of each income source of previous month
-      Job: getIncomeSourceTotal(previousMonthIncome, "job"),
-      Freelance: getIncomeSourceTotal(previousMonthIncome, "freelance"),
-      Business: getIncomeSourceTotal(previousMonthIncome, "business"), 
-      Investment: getIncomeSourceTotal(previousMonthIncome, "investment"),
-      Other: getIncomeSourceTotal(previousMonthIncome, "other")
-  }
+  
   
     useEffect(()=>{
        localStorage.setItem('Expense', JSON.stringify(expense))
@@ -291,7 +245,7 @@ const chartOptions = useMemo(() => ({
       createdAt,
       Month: Mapped_ExpenseMonth,
       day: day,
-      id: Date.now() //Used the current time coordinates as an id to make it unique
+      id: Date.now(), //Used the current time coordinates as an id to make it unique
     }; 
     setExpenseArr(prev => [...prev, Expense_Info]);
 
@@ -334,7 +288,7 @@ const chartOptions = useMemo(() => ({
        Expense_Categories={Expense_Categories} expenseCategory={expenseCategory} expenseAmount={expenseAmount} setExpenseAmount={setExpenseAmount}
        addExpenseInfo={addExpenseInfo} Vertical_Side_NavBar={Vertical_Side_NavBar}/>, 
        children: [
-      { path: "viewall", element: <AllExpenses expenseArr={expenseArr} setExpenseArr={setExpenseArr}
+      { path: "viewall", element: <AllExpenses thisMonthExpense={thisMonthExpense} setExpenseArr={setExpenseArr}
        currencySymbol={currencySymbol}/>},
       { path: "housing", element: <HousingExpenses Housing_Expenses={Housing_Expenses} setExpenseArr={setExpenseArr}
       currencySymbol={currencySymbol}/> },

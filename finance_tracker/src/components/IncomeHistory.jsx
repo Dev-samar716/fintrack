@@ -62,7 +62,7 @@ export default function Income_History({
          onChange={(e)=>setSelectedMonth(e.target.value)}
          value={selectedMonth}>
           {months.map(value => {
-            return <option value={value}>{value}</option>
+            return <option value={value} key={value}>{value}</option>
           })}
         </select>
                 </div>
@@ -72,7 +72,7 @@ export default function Income_History({
        <select className="Input-Select" onChange={(e) => setSelectedSource(e.target.value)}> 
         <option value={'All'}>All</option>
           {Income_Sources.map(value => {
-            return <option value={value}>{value}</option>
+            return <option value={value} key={value}>{value}</option>
           })}
         </select>
                 </div>

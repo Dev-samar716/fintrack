@@ -215,3 +215,45 @@
     cursor: pointer;
     transform: translateY(-5px);
 }
+
+@media(max-width: 768px) {
+    .Expense-Categories-NavBar {
+  display: block;
+  width: 100%;
+  margin-top: 0
+}
+
+.Category-Routes-lists {
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.Expense-Input-Container {
+    width: 60%;
+}
+.Expense-Parent-Container {
+     display: flex; 
+     width: 100%;
+     min-height: 450px; 
+     flex-direction: column;
+}
+ .Add-Expense-btn-Container {
+    width: 25%;
+ }
+ .Modal-Overlay {
+    height: 80vh;
+ }
+ .Modal-div {
+    width: 80%;
+    height: 40%;
+ }
+ .Expense-Card {
+    width: 55%;
+     min-height: 30vh;
+    height: auto;
+ }
+ .Expense-Card-Container {
+    justify-content: center;
+ }
+}

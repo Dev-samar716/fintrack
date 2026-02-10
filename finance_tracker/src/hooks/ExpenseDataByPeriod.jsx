@@ -44,5 +44,5 @@ export default function useExpenseDataByPeriod(expenseArr) {
             const thisMonthExpensesTotal = useMemo(() =>  thisMonthExpense.reduce((a,b)=> {
            return a + Number(b.Expense_Amount);
            }, 0), [thisMonthExpense])
-        return {thisMonthExpense, previousMonthExpenses, PreviousMonthExpensesTotal, thisMonthExpensesTotal};
+        return {thisMonthExpense, previousMonthExpenses, thisMonthExpensesTotal, PreviousMonthExpensesTotal};
 }

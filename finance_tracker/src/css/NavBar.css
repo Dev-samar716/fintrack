@@ -1,103 +1,171 @@
-/*Styling of Navigation Bar begins from here*/ 
 * {
-    padding: 0; 
-    margin: 0;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
-.logo{
- font-size: 22px;
-  font-weight: bold;
-  color: #111827; 
-  font-family: 'Poppins', sans-serif;
-} 
-.navbar {
-    background-color: #fff; 
-    display: flex;
-} 
-.User-Profile-Icon-Container {
-     background-color: #111827;
-       border-radius: 22px; 
-       padding: 0.65rem; 
-       color: gray;
-} 
-.User-Profile-Wrapper {
-    display: flex; 
-    height: 100%; 
-    align-items: center; 
-    gap: 8px;
-    position: relative;
-} 
-.Username-header-container {
-    font-family: 'Roboto', sans-serif;
-    color: #111827dc; 
-} 
-.Menu-Icon-Container i {
-    display: none;
-}
-.Menu-Icon-Container i:hover{
-     background-color: lavender; 
-     color: royalblue;
-     cursor: pointer; 
-} 
-.Nav-Links-Container {
-     display: flex; 
-     gap: 2rem;  
-} 
-.Nav-Links-Container li {
-    list-style-type: none;
-}
-.Nav-link {
-      font-size: 1rem; 
-     color: #111827; 
-     text-decoration: none;
-     font-family: 'Poppins', sans-serif; 
-     padding: 0.6rem
-}
-.Nav-link:hover {
-    background-color: lavender;
-    border: 1px solid #2563eb;
-} 
 
-@media(max-width: 768px) {
-    .Nav-link {
-        display: none;
-    } 
-    .Username-header-container {
-        font-size: 0.8rem;  
-    } 
-    .User-Profile-Wrapper {
-        flex-wrap: wrap;
-    } 
-    .Menu-Icon-Container i {
+.navbar {
+  width: 100%;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.Upper-Row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0.8rem 1.5rem;
+}
+
+/* Left */
+.Nav-logo-Container {
+  flex: 0 0 auto;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: bold;
+  color: #111827;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Center */
+.Nav-Links-Container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  list-style: none;
+}
+
+.Nav-link {
+  font-size: 1rem;
+  color: #111827;
+  text-decoration: none;
+  font-family: 'Poppins', sans-serif;
+  padding: 0.6rem;
+}
+
+.Nav-link:hover {
+  background-color: lavender;
+  border: 1px solid #2563eb;
+  border-radius: 6px;
+}
+
+/* Right */
+.User-Profile-Wrapper {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+}
+
+.User-Profile-Icon-Container {
+  background-color: #111827;
+  border-radius: 22px;
+  padding: 0.65rem;
+  color: gray;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Menu-Icon-Container i {
+  display: none;
+  font-size: 1.2rem;
+  padding: 0.4rem;
+}
+
+.Menu-Icon-Container i:hover {
+  background-color: lavender;
+  color: royalblue;
+  cursor: pointer;
+}
+
+/* ===============================
+   DROPDOWN MENU (MOBILE)
+   =============================== */
+.NavLinks-div-Modal {
+  position: absolute;
+  top: 45px;
+  right: 0;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  padding: 1rem;
+  z-index: 999;
+}
+
+.NavLinks-List {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  list-style: none;
+}
+
+.Nav-link-modal {
+  text-decoration: none;
+  color: #111827;
+  font-family: 'Poppins', sans-serif;
+  padding: 0.4rem;
+}
+
+.Nav-link-modal:hover {
+  background-color: lightgray;
+  border-radius: 6px;
+}
+
+.Lower-Row {
+  width: 100%;
+  padding: 0.7rem 1.5rem;
+  display: flex;
+  justify-content: center;
+  background-color: #fff;
+}
+
+.Nav-Search-Input {
+  width: 50%;
+  max-width: 500px;
+  min-width: 220px;
+  padding: 0.6rem 0.8rem;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  font-family: 'Poppins', sans-serif;
+  outline: none;
+}
+
+.Nav-Search-Input:focus {
+  border-color: #2563eb;
+}
+.Search-BTN {
+    background-color: #2563eb;
+    color: #fff; 
+    padding: 0.5rem;
+    cursor: pointer
+}
+.Search-BTN:hover {
+    background-color: #2564eb91;
+}
+/* ===============================
+   MOBILE
+   =============================== */
+@media (max-width: 768px) {
+  .Nav-Links-Container {
+    display: none;
+  }
+
+  .Menu-Icon-Container i {
     display: block;
-   }   
-   .NavLinks-div-Modal {
-    background-color: #fff;
-     display: flex; 
-     border-radius: 10px; 
-     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-    position: absolute;
-    top: 40px;  
-    right: 0;   
-    z-index: 999; /* Ensures it's above everything */ 
-    padding: 1rem;
-    gap: 1rem; 
-    border: solid 0.5px rgb(0, 0, 0, 0.2)
   }
-  .Nav-link-modal {
-      text-decoration: none; 
-      color: #111827; 
-      font-family: 'Poppins', sans-serif;
+
+  .Lower-Row {
+    padding: 0.6rem 1rem;
   }
-   .NavLinks-List li {
-        text-decoration: none; 
-        list-style-type: none; 
-   } 
-     .NavLinks-List { 
-        display: flex; 
-        flex-direction: column;
-        gap: 1rem;
-   }   
-   .Nav-link-modal:hover {
-           background-color: lightgray;
-   }
-   }
+
+  .Nav-Search-Input {
+    width: 100%;
+  }
+}

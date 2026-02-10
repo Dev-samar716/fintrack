@@ -29,10 +29,10 @@ function Display_All({Title, Amount, onDelete,Category,Month,day,currencySymbol}
     )
 }
 
-export default function AllExpenses({expenseArr, setExpenseArr,currencySymbol}) {
+export default function AllExpenses({thisMonthExpense, setExpenseArr,currencySymbol}) {
     return(
      <div className="Expense-Card-Container">
-        {expenseArr.map(value => (
+        {thisMonthExpense.map(value => (
              <Display_All Title={value.Expense_Title} Amount={value.Expense_Amount}
              onDelete={()=>Handle_Delete(value.id, setExpenseArr)} key={value.id} Category={value.Expense_Category}
              Month={value.Month} day={value.day} currencySymbol={currencySymbol}/>

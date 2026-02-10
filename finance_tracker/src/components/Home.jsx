@@ -4,6 +4,7 @@ import useExpenseDataByPeriod from '../hooks/ExpenseDataByPeriod.jsx';
 import useIncomeDateFilter from "../hooks/IncomeDateFilter.jsx";
 import useExpenseChartData from "../hooks/ExpenseChartData.jsx"
 import useIncomeChartData from "../hooks/IncomeChartData.jsx";
+import useSavingsSuggestion from '../hooks/SavingsSuggestion.jsx';
 import { useMemo } from "react";
 
 export default function Home({
@@ -15,7 +16,7 @@ export default function Home({
   previousMonth_IncomeSourcesTotal,
  currencySymbol,incomeArr, MONTH_MAP
 }) {
-  const {thisMonthExpense, previousMonthExpenses, PreviousMonthExpensesTotal, thisMonthExpensesTotal} = useExpenseDataByPeriod(expenseArr);
+  const {thisMonthExpense, previousMonthExpenses, thisMonthExpensesTotal, PreviousMonthExpensesTotal} = useExpenseDataByPeriod(expenseArr);
 
   const {thisMonthIncome, previousMonthIncome, ThisMonth_IncomeTotal, previousMonth_IncomeTotal} = useIncomeDateFilter(incomeArr);
 
@@ -24,6 +25,8 @@ export default function Home({
 
     const {Total_Income_Comparision_Chart_Data, Income_Sources_Ranking_ChartData} = useIncomeChartData(thisMonthIncome, previousMonthIncome, 
       ThisMonth_IncomeTotal, previousMonth_IncomeTotal,ThisMonth_IncomeSourcesTotal)
+
+       const {net_balance, Savings_Suggestion} = useSavingsSuggestion(ThisMonth_IncomeTotal, thisMonthExpensesTotal)
 
   // Calculates the percentage change from the previous month to the current month in percentage
   let Percentage_Charge = useMemo(() => {
@@ -132,11 +135,14 @@ export default function Home({
       </div>
     </div>
      <div className="Home-Page-Parent-Div">
-      <div>
+      <div className="Finance-analysis-container">
         <h2>
-      Net Balance: <span style={ThisMonth_IncomeTotal > thisMonthExpensesTotal ? {color: "lime"} : {color: "red"}}>
-        {currencySymbol}{ThisMonth_IncomeTotal - thisMonthExpensesTotal}
+      Net Balance: <span style={net_balance > 0 ? {color: "lime"} : {color: "red"}}>
+        {currencySymbol}{net_balance}
         </span>
+        </h2>
+        <h2>
+          Suggested savings amount: {currencySymbol}{Savings_Suggestion}
         </h2>
       </div>
      </div>
