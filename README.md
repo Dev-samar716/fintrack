@@ -13,9 +13,9 @@
 
 ✅ Implemented / In Progress
 
-- Add and view income entries
+- Add, delete and view income entries
 
-- Add and view expense entries
+- Add, delete and view expense entries
 
 - Categorized expenses (food, housing, transportation, personal, etc.)
 
