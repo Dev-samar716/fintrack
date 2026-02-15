@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Expense_Modal from "./ExpenseModal.jsx";
-import {Link, Outlet} from 'react-router-dom';
+import {useOutletContext, Outlet} from 'react-router-dom';
+
 import '../css/Expense.css';
 
 export default function Expense({
@@ -18,6 +19,7 @@ export default function Expense({
     const NavLinks_Array = ["View All","Housing", "Transportation", "Food & Groceries", "Education",
         "Personal", "Other"
     ];
+    const {editId, setEditId, edit, setEdit, expenseArr} = useOutletContext();
     return( 
       <div>
         <div className="Expense-Nav-Menu-Icon-Container">
@@ -47,7 +49,7 @@ export default function Expense({
         </div>
         </div>
          <div className="Expense-Cards-Container-Parent">
-         <Outlet />
+         <Outlet context={{editId, setEditId, edit, setEdit, expenseArr}}/>
         </div>  
       </div>
         

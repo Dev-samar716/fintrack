@@ -215,7 +215,21 @@
     cursor: pointer;
     transform: translateY(-5px);
 }
-
+.EditBtn {
+    background-color: #2a2a2a;
+    border: none;
+    font-family: 'Poppins', sans-serif; 
+    color: #eee;
+    font-size: 1.5rem;
+     padding: 1rem;
+}
+.Edit-Container {
+    padding-top: 0;
+}
+.EditBtn:hover {
+   background-color: #3a3a3a;
+   cursor: pointer;
+}
 @media(max-width: 768px) {
     .Expense-Categories-NavBar {
   display: block;

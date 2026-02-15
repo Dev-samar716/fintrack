@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo } from 'react' 
-import { createHashRouter, RouterProvider, Outlet, useOutletContext} from 'react-router-dom';
+import { createHashRouter, RouterProvider, Outlet} from 'react-router-dom';
 import {Link} from 'react-router-dom';
 import './css/App.css';
 import Welcome from './components/Welcome.jsx' 
@@ -64,11 +64,13 @@ function HistoryLayout({Vertical_Side_NavBar}) {
   );
 }
 
-function AppLayout() {
+function AppLayout({expenseArr}) {
+  const [editId, setEditId] = useState('');
+   const [edit, setEdit] = useState(false);
    return( 
     <>
   <Navigation_Bar /> 
-  <Outlet /> 
+  <Outlet context={{editId, setEditId, edit, setEdit, expenseArr}}/> 
   </>
    );
 }
@@ -130,6 +132,7 @@ function App() {
      const saved = localStorage.getItem("Selected_Currency");
      return saved ? JSON.parse(saved) : ("₹");
    })
+
   // Responsible for tracking the desired Month's expense or income data selected by the user
   const [selectedMonth, setSelectedMonth] = useState(MONTH_MAP[new Date().getMonth()])
 
@@ -275,7 +278,7 @@ const months = [
     ]
   },
   {
-    element: <AppLayout />, 
+    element: <AppLayout expenseArr={expenseArr}/>,
     children: [
       {path: "home", element: <Home Category_Expenses={Category_Expenses} expenseArr={expenseArr}
       PreviousMonth_CategoryExpenses={PreviousMonth_CategoryExpenses} supportedCurrencies={supportedCurrencies}
